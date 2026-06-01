@@ -1,6 +1,6 @@
 // Estilos
-const wrapper = "bg-themeBg px-4 pb-4 w-full"
-const title = "text-2xl font-bold text-themePrimary"
+const wrapper = "bg-themeBg w-full px-4 pt-4 pb-2 flex justify-center"
+const title = "text-center text-3xl sm:text-4xl font-extrabold text-themePrimary border-b-4 border-themePrimary pb-2 tracking-tight"
 
 // Componente
 export default function  FavoritesTitle() {

@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext"
 import { useNavigate } from "react-router-dom"
-import { LogOut, Loader2, Pencil, Gift, Trophy, ShoppingBag } from "lucide-react"
+import { LogOut, Pencil, Gift, Trophy, ShoppingBag, ExternalLink } from "lucide-react"
 import Header from "../../components/Header/Header"
 import Footer from "@/components/Footer/Footer"
 import Leaderboard from "@/components/Profile/Leaderboard"
@@ -11,7 +11,7 @@ import Weal from "@/components/Points/Weal"
 import { useState } from "react"
 
 export default function UserPage() {
-    const { profile: user, logout, isLoading, refreshProfile } = useAuth()
+    const { profile: user, logout, refreshProfile } = useAuth()
     const navigate = useNavigate()
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isAchievementsOpen, setIsAchievementsOpen] = useState(false)
@@ -21,14 +21,6 @@ export default function UserPage() {
     const handleLogout = () => {
         logout()
         navigate("/")
-    }
-
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-themeBg flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-themePrimary" />
-            </div>
-        )
     }
 
     if (!user) return null
@@ -42,7 +34,7 @@ export default function UserPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
                     {/* Columna Izquierda: Perfil y Stats */}
-                    <div className="space-y-6">
+                    <div className="flex h-full flex-col gap-6">
                         {/* Tarjeta de Perfil */}
                         <div className="bg-themeSurface rounded-3xl p-6 shadow-theme border border-themeBorder flex flex-col items-center text-center relative">
                             <button 
@@ -69,29 +61,26 @@ export default function UserPage() {
                                 
                                 <button 
                                     onClick={() => setIsAchievementsOpen(true)}
-                                    className="text-center hover:bg-themeSurface rounded-xl p-2 cursor-pointer transition-colors"
+                                    className="text-center hover:bg-themeSurface rounded-xl p-2 cursor-pointer transition-colors group"
                                 >
                                     <div className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">
                                         <Trophy size={20} />
                                     </div>
                                     <div className="text-xs text-themeTextSecondary uppercase font-bold tracking-wider mt-1">Trofeos</div>
+                                    <div className="mt-1 flex items-center justify-center gap-1 text-[11px] font-semibold text-themeTextSecondary transition-colors group-hover:text-themePrimary">
+                                        <ExternalLink size={12} className="text-themePrimary" />
+                                        <span>Ver vitrina</span>
+                                    </div>
                                 </button>
                             </div>
                         </div>
 
-                        <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center justify-center gap-2 bg-themeSurface border border-themeBorder text-red-500 py-4 px-6 rounded-2xl hover:bg-red-50 transition-colors font-semibold"
-                        >
-                            <LogOut size={20} />
-                            Cerrar Sesión
-                        </button>
                     </div>
 
                     {/* Columnas Derecha: Gamificación */}
                     <div className="md:col-span-2 space-y-6 flex flex-col">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-themePrimary rounded-3xl p-6 shadow-theme text-white flex flex-col justify-between gap-4">
+                            <div className="relative overflow-hidden bg-themePrimary rounded-3xl p-6 shadow-2xl ring-2 ring-white/20 animate-pulse text-white flex flex-col justify-between gap-4">
                                 <div>
                                     <h3 className="text-xl font-bold mb-1">Ruleta Diaria</h3>
                                     <p className="text-white/80 text-sm">Gira para ganar puntos extra cada día.</p>
@@ -112,7 +101,7 @@ export default function UserPage() {
                                 </div>
                                 <button
                                     onClick={() => setShowShop(true)}
-                                    className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-themePrimary text-white font-bold text-base shadow-sm hover:opacity-90 active:scale-95 transition-all"
+                                    className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-themePrimary text-white font-bold text-base shadow-lg ring-1 ring-black/5 hover:bg-themePrimaryHover active:scale-95 transition-all"
                                 >
                                     <ShoppingBag size={20} />
                                     Ver Tienda
@@ -125,6 +114,14 @@ export default function UserPage() {
                         </div>
                     </div>
                 </div>
+
+                <button
+                    onClick={handleLogout}
+                    className="mt-8 w-full flex items-center justify-center gap-2 bg-themeSurface border border-themeBorder text-red-500 py-4 px-6 rounded-2xl hover:bg-red-50 transition-colors font-semibold"
+                >
+                    <LogOut size={20} />
+                    Cerrar Sesión
+                </button>
             </div>
 
             <EditProfileModal 

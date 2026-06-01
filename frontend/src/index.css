@@ -33,9 +33,9 @@
 }
 
 :root[data-theme="malagueno"] {
-  --theme-bg: #F8F6F1;
-  --theme-surface: #FFFFFF;
-  --theme-surface-secondary: #F1F5F3;
+  --theme-bg: #16693f;
+  --theme-surface: #bd73bd;
+  --theme-surface-secondary: #945094;
   --theme-text: #1F2937;
   --theme-text-secondary: #4B5563;
   --theme-primary: #14532D;

@@ -13,7 +13,7 @@ const themeSwitcher =
   "flex items-center gap-1 p-1 rounded-full bg-themeSurfaceSecondary border border-themeBorder"
 const themeButtonBase =
   "p-2 rounded-full transition-all duration-200 flex items-center justify-center"
-const themeButtonActive = "bg-themePrimary text-white shadow-sm scale-105"
+const themeButtonActive = "bg-themePrimary text-white shadow-sm scale-110 ring-2 ring-themePrimary ring-offset-2 ring-offset-themeSurface"
 const themeButtonInactive = "text-themeTextSecondary hover:text-themeText hover:bg-themeSurface"
 const infoButton =
   "p-2 rounded-full text-themeTextSecondary hover:text-themePrimary hover:bg-themeSurfaceSecondary transition-colors duration-200"
@@ -64,7 +64,7 @@ export default function Header() {
                 className={`${themeButtonBase} ${isActive ? themeButtonActive : themeButtonInactive}`}
                 data-testid={testId}
               >
-                <Icon size={18} strokeWidth={2.25} />
+                <Icon size={18} strokeWidth={isActive ? 2.75 : 2.1} />
               </button>
             )
           })}
