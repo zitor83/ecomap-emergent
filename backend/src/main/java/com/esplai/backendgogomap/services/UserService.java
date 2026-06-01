@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class UserService {
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
 
-        return userMapper.toResponse(user);
+        return userMapper.toResponseDTO(user);
     }
 
     @Transactional
@@ -142,7 +143,7 @@ public class UserService {
     @Transactional
     public UserResponseDTO updateUserProfile(String email, UpdateProfileRequestDTO request) {
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
 
         // Verificar si el nuevo email ya está en uso por otro usuario
         if (!user.getEmail().equalsIgnoreCase(request.getEmail())) {
@@ -162,7 +163,7 @@ public class UserService {
 
     public List<AchievementResponseDTO> getUserAchievements(String email) {
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
 
         List<Achievement> allAchievements = achievementRepository.findAll();
         int userKarma = user.getKarmaPoints();
@@ -181,7 +182,7 @@ public class UserService {
 
     public List<RewardResponseDTO> getUserRewards(String email) {
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
 
         List<Reward> allRewards = rewardRepository.findAll();
         Set<Long> ownedIds = user.getUnlockedRewards().stream()
@@ -203,7 +204,7 @@ public class UserService {
     @Transactional
     public UserResponseDTO buyReward(String email, Long rewardId) {
         User user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario", "email", email));
 
         Reward reward = rewardRepository.findById(rewardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reward", "id", rewardId));
