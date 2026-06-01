@@ -4,6 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Theme-aware tokens (driven by [data-theme] on <html>)
+        themeBg: 'var(--theme-bg)',
+        themeSurface: 'var(--theme-surface)',
+        themeSurfaceSecondary: 'var(--theme-surface-secondary)',
+        themeCard: 'var(--theme-card-bg)',
+        themeText: 'var(--theme-text)',
+        themeTextSecondary: 'var(--theme-text-secondary)',
+        themePrimary: 'var(--theme-primary)',
+        themePrimaryHover: 'var(--theme-primary-hover)',
+        themeSecondary: 'var(--theme-secondary)',
+        themeBorder: 'var(--theme-border)',
+        themeAccent: 'var(--theme-accent)',
         surface: '#0f150e',
         'surface-dim': '#0a1009',
         'surface-card': '#1E3B20',

@@ -1,22 +1,85 @@
 import { Link } from "react-router-dom"
+import { Info, Sun, Moon, Flower2 } from "lucide-react"
+import { useTheme, type Theme } from "@/context/ThemeContext"
 
-const header = "bg-white px-4 pt-5 pb-3 flex items-center w-full"
-const headerInner = "max-w-screen-xl mx-auto w-full flex items-center justify-center"
-const logoBase = "flex items-center gap-2 text-primary font-bold text-xl"
-const logoImg = "h-15"
+const header =
+  "w-full px-4 sm:px-6 py-3 flex items-center justify-between bg-themeSurface text-themeText border-b border-themeBorder shadow-theme transition-colors duration-300"
+const logoBase = "flex items-center gap-2 font-bold text-xl"
+const logoImg = "h-12 sm:h-14"
 const texto = "h-5"
 
-// Componente
+const rightCluster = "flex items-center gap-2 sm:gap-3"
+const themeSwitcher =
+  "flex items-center gap-1 p-1 rounded-full bg-themeSurfaceSecondary border border-themeBorder"
+const themeButtonBase =
+  "p-2 rounded-full transition-all duration-200 flex items-center justify-center"
+const themeButtonActive = "bg-themePrimary text-white shadow-sm scale-105"
+const themeButtonInactive = "text-themeTextSecondary hover:text-themeText hover:bg-themeSurface"
+const infoButton =
+  "p-2 rounded-full text-themeTextSecondary hover:text-themePrimary hover:bg-themeSurfaceSecondary transition-colors duration-200"
+
+interface ThemeOption {
+  value: Theme
+  label: string
+  Icon: typeof Sun
+  testId: string
+}
+
+const themeOptions: ThemeOption[] = [
+  { value: "light", label: "Tema claro", Icon: Sun, testId: "theme-light-btn" },
+  { value: "dark", label: "Tema oscuro", Icon: Moon, testId: "theme-dark-btn" },
+  { value: "malagueno", label: "Tema malagueño", Icon: Flower2, testId: "theme-malagueno-btn" },
+]
+
 export default function Header() {
+  const { theme, setTheme } = useTheme()
+
   return (
-    <header className={header}>
-      <div className={headerInner}>
-        <Link to="/map" className={logoBase}>
-          <img src="/assets/SoloLogo-removebg.svg" alt="Logo GoGoMap" className={logoImg} />
-          <img src="/assets/SoloLetras-removebg.svg" alt="Logo GoGoMap" className={texto} />  
+    <header className={header} data-testid="app-header">
+      {/* Izquierda: Logo */}
+      <Link to="/map" className={logoBase} data-testid="header-logo-link">
+        <img src="/assets/SoloLogo-removebg.svg" alt="Logo GoGoMap" className={logoImg} />
+        <img src="/assets/SoloLetras-removebg.svg" alt="GoGoMap" className={texto} />
+      </Link>
+
+      {/* Derecha: Selector de tema + Info */}
+      <div className={rightCluster}>
+        <div
+          role="radiogroup"
+          aria-label="Selector de tema"
+          className={themeSwitcher}
+          data-testid="theme-switcher"
+        >
+          {themeOptions.map(({ value, label, Icon, testId }) => {
+            const isActive = theme === value
+            return (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={isActive}
+                aria-label={label}
+                title={label}
+                onClick={() => setTheme(value)}
+                className={`${themeButtonBase} ${isActive ? themeButtonActive : themeButtonInactive}`}
+                data-testid={testId}
+              >
+                <Icon size={18} strokeWidth={2.25} />
+              </button>
+            )
+          })}
+        </div>
+
+        <Link
+          to="/about"
+          aria-label="Acerca de GoGoMap"
+          title="Acerca de GoGoMap"
+          className={infoButton}
+          data-testid="header-info-link"
+        >
+          <Info size={24} />
         </Link>
       </div>
     </header>
-
   )
 }
