@@ -9,7 +9,11 @@ export default function Footer() {
   }
 
   return (
+<<<<<<< HEAD
     <footer className="bg-themeSurface border-t border-themeBorder" data-testid="app-footer">
+=======
+    <footer className="bg-app-bg border-t">
+>>>>>>> develop
       <div className="max-w-screen-xl mx-auto flex justify-around p-4">
         <NavLink to="/map" data-testid="footer-map-link">
           {({ isActive }) => (

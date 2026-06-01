@@ -2,10 +2,17 @@ import { Link } from "react-router-dom"
 import { Info, Sun, Moon, Flower2 } from "lucide-react"
 import { useTheme, type Theme } from "@/context/ThemeContext"
 
+<<<<<<< HEAD
 const header =
   "w-full px-4 sm:px-6 py-3 flex items-center justify-between bg-themeSurface text-themeText border-b border-themeBorder shadow-theme transition-colors duration-300"
 const logoBase = "flex items-center gap-2 font-bold text-xl"
 const logoImg = "h-12 sm:h-14"
+=======
+const header = "bg-app-bg px-4 pt-5 pb-3 flex items-center w-full"
+const headerInner = "max-w-screen-xl mx-auto w-full flex items-center justify-center"
+const logoBase = "flex items-center gap-2 text-primary font-bold text-xl"
+const logoImg = "h-15"
+>>>>>>> develop
 const texto = "h-5"
 
 const rightCluster = "flex items-center gap-2 sm:gap-3"
