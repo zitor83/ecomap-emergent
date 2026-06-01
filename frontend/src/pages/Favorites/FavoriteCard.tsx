@@ -5,18 +5,18 @@ import type { PointDetail } from "@/api/types/index"
 import userService from "@/api/services/userService"
 
 // Estilos (hemos añadido cursor-pointer y hover a la tarjeta)
-const card        = "bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-4 flex gap-4 items-start w-full cursor-pointer hover:bg-gray-50 transition-colors border border-gray-50"
+const card        = "bg-themeSurface text-theme rounded-2xl shadow-theme p-4 flex gap-4 items-start w-full cursor-pointer hover:bg-themeSurfaceSecondary transition-colors border border-themeBorder"
 const odsChip     = "w-20 h-20 shrink-0 rounded-xl overflow-hidden"
 const odsImg      = "w-full h-full object-cover"
 const body        = "flex-1 min-w-0"
 const topRow      = "flex items-start justify-between gap-2"
-const name        = "font-bold text-gray-900 text-base leading-tight line-clamp-2"
-const odsName     = "text-green-600 font-semibold text-sm mt-0.5"
-const address     = "text-gray-500 text-sm mt-1 line-clamp-2 break-words"
+const name        = "font-bold text-theme text-base leading-tight line-clamp-2"
+const odsName     = "text-themePrimary font-semibold text-sm mt-0.5"
+const address     = "text-themeTextSecondary text-sm mt-1 line-clamp-2 break-words"
 const bottomRow   = "flex items-center gap-2 mt-2"
 const statusOpen  = "text-xs font-semibold px-3 py-1 rounded-full bg-green-100 text-green-700"
-const statusClose = "text-xs font-semibold px-3 py-1 rounded-full bg-gray-200 text-gray-500"
-const statusBroken  = "text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-600"
+const statusClose = "text-xs font-semibold px-3 py-1 rounded-full bg-themeSurfaceSecondary text-themeTextSecondary"
+const statusBroken  = "text-xs font-semibold px-3 py-1 rounded-full bg-themeSurfaceSecondary text-themeTextSecondary"
 
 function getStatusStyle(status: string) {
     if(status === "active") return statusOpen
@@ -88,9 +88,10 @@ export default function FavoriteCard({ place, onFavoriteRemoved }: { place: Poin
                         onClick={handleToggleFavorite}
                         disabled={isLoading}
                         className={`shrink-0 transition-all duration-200 active:scale-90 hover:scale-110 disabled:opacity-50 ${
-                            isFavorite ? "text-red-500" : "text-gray-300"
+                            isFavorite ? "text-red-500" : "text-themeTextSecondary"
                         }`}
                         title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+                        data-testid="favorite-card-heart-btn"
                     >
                         <Heart 
                             size={24} 

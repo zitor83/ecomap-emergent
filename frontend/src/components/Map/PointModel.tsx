@@ -139,7 +139,7 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
   return (
     <div className="flex flex-col gap-4">
       {/* Header: badge ODS + título */}
-      <div className="flex items-center gap-3 pb-3 border-b border-gray-100">
+      <div className="flex items-center gap-3 pb-3 border-b border-themeBorder">
         {point.odsNumber && (
           <span
             className="flex items-center justify-center w-9 h-9 rounded-md text-white font-bold text-sm shrink-0"
@@ -148,7 +148,7 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
             {point.odsNumber}
           </span>
         )}
-        <span className="text-base font-semibold text-gray-700 tracking-wide uppercase">
+        <span className="text-base font-semibold text-themeTextSecondary tracking-wide uppercase">
          {point.ods}
         </span>
       </div>
@@ -156,9 +156,9 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
       {/* Título y dirección */}
       <div className="flex justify-between items-start gap-4">
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-bold text-gray-900">{point.title}</h2>
+          <h2 className="text-2xl font-bold text-theme">{point.title}</h2>
           {odsInfo && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold w-fit">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-themeSurfaceSecondary text-theme text-xs font-semibold w-fit">
               <img
                 src={odsInfo.imagePath}
                 alt={`ODS ${odsInfo.id}`}
@@ -168,7 +168,7 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
             </span>
           )}
           {point.address && (
-            <p className="flex items-center gap-1 text-gray-500 text-sm">
+            <p className="flex items-center gap-1 text-themeTextSecondary text-sm">
               <svg
                 className="w-4 h-4 shrink-0"
                 fill="none"
@@ -191,12 +191,13 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
         <button
           onClick={handleToggleFavorite}
           disabled={isLoadingFav}
-          className="p-2 rounded-full hover:bg-gray-100 transition-all duration-200 active:scale-90 hover:scale-110 disabled:opacity-50 shrink-0"
+          className="p-2 rounded-full hover:bg-themeSurfaceSecondary transition-all duration-200 active:scale-90 hover:scale-110 disabled:opacity-50 shrink-0"
           title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+          data-testid="point-favorite-btn"
         >
           <svg
             className={`w-7 h-7 transition-colors duration-300 ${
-              isFavorite ? 'fill-red-500 text-red-500' : 'fill-none text-gray-400 hover:text-red-400'
+              isFavorite ? 'fill-red-500 text-red-500' : 'fill-none text-themeTextSecondary hover:text-red-400'
             }`}
             stroke="currentColor"
             strokeWidth={2}
@@ -212,19 +213,19 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
       </div>
 
       {/* Tabla estado + descripción */}
-      <div className="rounded-xl bg-gray-50 border border-gray-100 overflow-hidden text-sm">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-          <span className="text-gray-400 font-semibold uppercase tracking-widest text-xs">
+      <div className="rounded-xl bg-themeSurfaceSecondary border border-themeBorder overflow-hidden text-sm">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-themeBorder">
+          <span className="text-themeTextSecondary font-semibold uppercase tracking-widest text-xs">
             Estado
           </span>
           <span
             className={`flex items-center gap-1.5 font-semibold ${
-              point.status === "active" ? "text-green-600" : "text-gray-400"
+              point.status === "active" ? "text-themePrimary" : "text-themeTextSecondary"
             }`}
           >
             <span
               className={`w-2 h-2 rounded-full ${
-                point.status === "active" ? "bg-green-500" : "bg-gray-300"
+                point.status === "active" ? "bg-themePrimary" : "bg-themeTextSecondary/40"
               }`}
             />
             {point.status === "active" ? "Funcionando" : point.status}
@@ -233,10 +234,10 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
 
         {point.description && (
           <div className="flex items-start justify-between px-4 py-3 gap-4">
-            <span className="text-gray-400 font-semibold uppercase tracking-widest text-xs shrink-0 pt-0.5">
+            <span className="text-themeTextSecondary font-semibold uppercase tracking-widest text-xs shrink-0 pt-0.5">
               Descripción
             </span>
-            <span className="text-gray-700 text-right max-h-24 sm:max-h-32 md:max-h-40 overflow-y-auto leading-relaxed">
+            <span className="text-theme text-right max-h-24 sm:max-h-32 md:max-h-40 overflow-y-auto leading-relaxed">
               {point.description}
             </span>
           </div>
@@ -279,7 +280,8 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
           onClick={handleVisit}
           disabled={isInteracting || hasInteracted || !withinRange}
           className="flex-1 py-3 rounded-full text-white font-semibold text-base"
-          style={{ backgroundColor: hasInteracted ? '#9ca3af' : 'var(--app-green)' }}
+          style={{ backgroundColor: hasInteracted ? '#9ca3af' : 'var(--theme-primary)' }}
+          data-testid="point-visit-btn"
         >
           {hasInteracted ? '✓ Visitado' : 'Visitar'}
         </Button>
@@ -287,14 +289,15 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
           onClick={handleReport}
           disabled={isInteracting}
           variant="outline"
-          className="flex-1 py-3 rounded-full font-semibold text-base border-2 border-gray-300 text-gray-700"
+          className="flex-1 py-3 rounded-full font-semibold text-base border-2 border-themeBorder text-theme bg-themeSurface hover:bg-themeSurfaceSecondary"
+          data-testid="point-report-btn"
         >
           Reportar
         </Button>
       </div>
 
       {!hasInteracted && !withinRange && (
-        <p className="text-xs text-gray-500 text-center mt-1">
+        <p className="text-xs text-themeTextSecondary text-center mt-1">
           Debes estar a menos de 50m para visitar este punto
         </p>
       )}

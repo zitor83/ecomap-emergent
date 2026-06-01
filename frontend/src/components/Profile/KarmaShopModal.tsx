@@ -62,34 +62,36 @@ export default function KarmaShopModal({ isOpen, onClose, userKarma, onPurchaseS
     <div
       className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
       onClick={onClose}
+      data-testid="karma-shop-modal"
     >
       <div
-        className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-50 p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto"
+        className="bg-themeSurface text-theme rounded-3xl shadow-theme border border-themeBorder p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <ShoppingCart size={28} className="text-green-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Tienda de Karma</h2>
+            <ShoppingCart size={28} className="text-themePrimary" />
+            <h2 className="text-2xl font-bold text-theme">Tienda de Karma</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-themeSurfaceSecondary transition-colors"
+            data-testid="karma-shop-close"
           >
-            <X size={20} className="text-gray-600" />
+            <X size={20} className="text-themeTextSecondary" />
           </button>
         </div>
 
         {/* Saldo de Karma */}
-        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-green-50 to-green-100 border border-green-200">
-          <p className="text-sm font-medium text-gray-600 mb-1">Tu saldo actual</p>
-          <p className="text-3xl font-bold text-green-600">{userKarma} pts Karma</p>
+        <div className="mb-6 p-4 rounded-2xl bg-themeSurfaceSecondary border border-themeBorder">
+          <p className="text-sm font-medium text-themeTextSecondary mb-1">Tu saldo actual</p>
+          <p className="text-3xl font-bold text-themePrimary">{userKarma} pts Karma</p>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse bg-gray-200 rounded-2xl h-40" />
+              <div key={i} className="animate-pulse bg-themeSurfaceSecondary rounded-2xl h-40" />
             ))}
           </div>
         ) : (
@@ -105,40 +107,41 @@ export default function KarmaShopModal({ isOpen, onClose, userKarma, onPurchaseS
                   key={reward.id}
                   className={`p-4 rounded-2xl border-2 transition-all ${
                     isOwned
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200 bg-white"
+                      ? "border-themePrimary bg-themeSurfaceSecondary"
+                      : "border-themeBorder bg-themeSurface"
                   }`}
                 >
                   <div className="flex flex-col gap-3">
                     <div className="flex items-start gap-3">
                       <div
                         className={`p-3 rounded-xl ${
-                          isOwned ? "bg-green-100" : "bg-gray-100"
+                          isOwned ? "bg-themePrimary/10" : "bg-themeSurfaceSecondary"
                         }`}
                       >
                         <Icon
                           size={28}
-                          className={isOwned ? "text-green-600" : "text-gray-600"}
+                          className={isOwned ? "text-themePrimary" : "text-themeTextSecondary"}
                         />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 mb-1">{reward.name}</h3>
-                        <p className="text-sm text-gray-600 mb-2">{reward.description}</p>
-                        <p className="text-sm font-bold text-gray-900">{reward.cost} pts</p>
+                        <h3 className="font-bold text-theme mb-1">{reward.name}</h3>
+                        <p className="text-sm text-themeTextSecondary mb-2">{reward.description}</p>
+                        <p className="text-sm font-bold text-theme">{reward.cost} pts</p>
                       </div>
                     </div>
 
                     {isOwned ? (
                       <button
                         disabled
-                        className="w-full py-2 rounded-full bg-green-500 text-white font-semibold text-sm"
+                        className="w-full py-2 rounded-full text-white font-semibold text-sm"
+                        style={{ backgroundColor: "var(--theme-primary)" }}
                       >
                         ✓ Adquirido
                       </button>
                     ) : !canAfford ? (
                       <button
                         disabled
-                        className="w-full py-2 rounded-full bg-gray-300 text-gray-600 font-semibold text-sm cursor-not-allowed"
+                        className="w-full py-2 rounded-full bg-themeSurfaceSecondary text-themeTextSecondary font-semibold text-sm cursor-not-allowed border border-themeBorder"
                       >
                         Karma insuficiente
                       </button>
@@ -146,7 +149,9 @@ export default function KarmaShopModal({ isOpen, onClose, userKarma, onPurchaseS
                       <button
                         onClick={() => handleBuy(reward.id)}
                         disabled={isPurchasing}
-                        className="w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold text-sm transition-colors disabled:opacity-50"
+                        className="w-full py-2 rounded-full text-white font-semibold text-sm transition-colors disabled:opacity-50"
+                        style={{ backgroundColor: "var(--theme-primary)" }}
+                        data-testid={`buy-reward-${reward.id}`}
                       >
                         {isPurchasing ? "Comprando..." : `Comprar por ${reward.cost} pts`}
                       </button>

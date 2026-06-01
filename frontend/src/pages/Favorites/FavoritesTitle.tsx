@@ -1,12 +1,12 @@
 // Estilos
-const wrapper = "bg-app-surface-1 px-4 pb-4 w-full"
-const title = "text-2x1 font-bold text-green-700"
+const wrapper = "bg-themeBg px-4 pb-4 w-full"
+const title = "text-2xl font-bold text-themePrimary"
 
 // Componente
 export default function  FavoritesTitle() {
     return (
         <div className={wrapper}>
-            <h1 className={title}>Favoritos</h1>
+            <h1 className={title} data-testid="favorites-title">Favoritos</h1>
         </div>
     )
 }

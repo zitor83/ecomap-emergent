@@ -307,9 +307,14 @@ html[data-theme] footer {
 
 body {
   margin: 0;
-  background-color: transparent;
-  color: #dee4d9;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
   overflow-x: hidden;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+html {
+  background-color: var(--theme-bg);
 }
 
 @theme inline {

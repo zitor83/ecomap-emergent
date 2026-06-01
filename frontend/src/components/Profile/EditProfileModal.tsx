@@ -50,57 +50,59 @@ export default function EditProfileModal({ isOpen, onClose, currentUser, onSucce
     <div
       className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
       onClick={onClose}
+      data-testid="edit-profile-modal"
     >
       <div
-        className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-50 p-6 w-full max-w-md"
+        className="bg-themeSurface text-theme rounded-3xl shadow-theme border border-themeBorder p-6 w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">Editar Perfil</h2>
+          <h2 className="text-xl font-bold text-theme">Editar Perfil</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-themeSurfaceSecondary transition-colors"
+            data-testid="edit-profile-close"
           >
-            <X size={20} className="text-gray-600" />
+            <X size={20} className="text-themeTextSecondary" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-themeTextSecondary mb-1">
               Nombre
             </label>
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full px-4 py-2 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-2 rounded-2xl border border-themeBorder bg-themeSurface text-theme focus:outline-none focus:ring-2 focus:ring-themePrimary"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-themeTextSecondary mb-1">
               Apellidos
             </label>
             <input
               type="text"
               value={apellidos}
               onChange={(e) => setApellidos(e.target.value)}
-              className="w-full px-4 py-2 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-2 rounded-2xl border border-themeBorder bg-themeSurface text-theme focus:outline-none focus:ring-2 focus:ring-themePrimary"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-themeTextSecondary mb-1">
               Email
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-2 rounded-2xl border border-themeBorder bg-themeSurface text-theme focus:outline-none focus:ring-2 focus:ring-themePrimary"
               required
             />
           </div>
@@ -115,14 +117,17 @@ export default function EditProfileModal({ isOpen, onClose, currentUser, onSucce
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 rounded-full border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-colors"
+              className="flex-1 py-3 rounded-full border-2 border-themeBorder text-theme font-semibold hover:bg-themeSurfaceSecondary transition-colors"
+              data-testid="edit-profile-cancel"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-3 rounded-full bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors disabled:opacity-50"
+              className="flex-1 py-3 rounded-full text-white font-semibold transition-colors disabled:opacity-50"
+              style={{ backgroundColor: "var(--theme-primary)" }}
+              data-testid="edit-profile-save"
             >
               {isLoading ? "Guardando..." : "Guardar"}
             </button>

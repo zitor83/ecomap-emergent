@@ -26,20 +26,22 @@ export default function PointDetailModal({
     <div
       className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4"
       onClick={onClose}
+      data-testid="point-detail-modal"
     >
       <div
-        className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 p-6 w-[90%] max-h-[85vh] overflow-y-auto md:max-w-lg md:w-[28rem] relative"
+        className="bg-themeSurface text-theme rounded-3xl shadow-theme border border-themeBorder p-6 w-[90%] max-h-[85vh] overflow-y-auto md:max-w-lg md:w-[28rem] relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-xl leading-none z-10"
+          className="absolute top-3 right-3 text-themeTextSecondary hover:text-theme text-xl leading-none z-10"
+          data-testid="point-detail-close"
         >
           ×
         </button>
 
               {loadingDetail ? (
-                <p className="text-sm text-gray-500">Cargando...</p>
+                <p className="text-sm text-themeTextSecondary">Cargando...</p>
               ) : selectedPoint && selectedPointCoords ? (
                 <PointModel
                   point={selectedPoint}

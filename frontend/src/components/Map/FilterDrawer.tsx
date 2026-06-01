@@ -45,23 +45,26 @@ export default function FilterDrawer({
         <div
           className="fixed inset-0 bg-black/50 z-[1999]"
           onClick={onClose}
+          data-testid="filter-drawer-backdrop"
         />
       )}
 
       {/* Panel lateral */}
       <div
-        className={`fixed inset-y-0 left-0 z-[2000] w-80 bg-white shadow-2xl transform transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-[2000] w-80 bg-themeSurface text-theme shadow-2xl transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        data-testid="filter-drawer"
       >
         {/* Cabecera */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h2 className="text-lg font-bold text-gray-900">Filtros del Mapa</h2>
+        <div className="flex items-center justify-between p-4 border-b border-themeBorder">
+          <h2 className="text-lg font-bold text-theme">Filtros del Mapa</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-themeSurfaceSecondary transition-colors"
+            data-testid="filter-drawer-close"
           >
-            <X size={20} className="text-gray-600" />
+            <X size={20} className="text-themeTextSecondary" />
           </button>
         </div>
 
@@ -69,8 +72,8 @@ export default function FilterDrawer({
         <div className="overflow-y-auto h-full pb-24">
           {/* Control de Radio */}
           {hasUserPosition && (
-            <div className="p-4 border-b border-gray-100">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <div className="p-4 border-b border-themeBorder">
+              <h3 className="text-sm font-semibold text-theme mb-3">
                 Radio de búsqueda
               </h3>
               <div className="flex items-center gap-4 mb-2">
@@ -81,13 +84,14 @@ export default function FilterDrawer({
                   step={0.5}
                   value={radiusKm}
                   onChange={(e) => onRadiusChange(Number(e.target.value))}
-                  className="flex-1 accent-green-600"
+                  className="flex-1"
+                  style={{ accentColor: "var(--theme-primary)" }}
                 />
-                <span className="text-gray-800 font-medium whitespace-nowrap w-14 text-right">
+                <span className="text-theme font-medium whitespace-nowrap w-14 text-right">
                   {radiusKm} km
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-themeTextSecondary mt-2">
                 {visibleCount} puntos visibles
               </p>
             </div>
@@ -95,36 +99,35 @@ export default function FilterDrawer({
 
           {/* Toggle de favoritos */}
           {isAuthenticated && (
-            <>
-              <div className="p-4 border-b border-gray-100">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">❤️</span>
-                    <span className="text-sm font-semibold text-gray-700">
-                      Solo mis favoritos
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => onToggleFavorites(!showFavoritesOnly)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      showFavoritesOnly ? "bg-green-600" : "bg-gray-200"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        showFavoritesOnly ? "translate-x-6" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
+            <div className="p-4 border-b border-themeBorder">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">❤️</span>
+                  <span className="text-sm font-semibold text-theme">
+                    Solo mis favoritos
+                  </span>
                 </div>
+                <button
+                  onClick={() => onToggleFavorites(!showFavoritesOnly)}
+                  aria-pressed={showFavoritesOnly}
+                  data-testid="filter-favorites-toggle"
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    showFavoritesOnly ? "bg-themePrimary" : "bg-themeSurfaceSecondary border border-themeBorder"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
+                      showFavoritesOnly ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
               </div>
-              <hr className="border-gray-100" />
-            </>
+            </div>
           )}
 
           {/* Lista de ODS con checkboxes */}
           <div className="p-4">
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-theme mb-3">
               Categorías ODS
             </h3>
             <div className="space-y-2">
@@ -134,21 +137,22 @@ export default function FilterDrawer({
                 return (
                   <label
                     key={n}
-                    className="flex items-center gap-3 p-3 rounded-2xl hover:bg-gray-50 cursor-pointer transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-2xl hover:bg-themeSurfaceSecondary cursor-pointer transition-colors"
                   >
                     <img
                       src={odsInfo.imagePath}
                       alt={`ODS ${n}`}
                       className="w-10 h-10 object-contain shrink-0"
                     />
-                    <span className="flex-1 text-sm font-medium text-gray-700">
+                    <span className="flex-1 text-sm font-medium text-theme">
                       {odsInfo.localLabel}
                     </span>
                     <input
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => handleToggle(n)}
-                      className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
+                      className="w-5 h-5 rounded cursor-pointer"
+                      style={{ accentColor: "var(--theme-primary)" }}
                     />
                   </label>
                 );

@@ -188,7 +188,7 @@ export default function MapPage() {
   }, [points, selectedOds, debouncedRadius, userPosition, showFavoritesOnly, favoriteIds]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-themeBg text-theme">
       <Header />
 
       {/* Botón flotante para abrir filtros */}
@@ -196,14 +196,15 @@ export default function MapPage() {
         onClick={() => setIsDrawerOpen(true)}
         className="fixed top-24 left-4 z-[1000] flex flex-col items-center gap-1"
         title="Abrir filtros"
+        data-testid="open-filter-drawer-btn"
       >
-        <div className="relative p-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 hover:bg-gray-50 transition-colors">
-          <SlidersHorizontal size={24} className="text-gray-700" />
+        <div className="relative p-2 bg-themeSurface rounded-2xl shadow-theme border border-themeBorder hover:bg-themeSurfaceSecondary transition-colors">
+          <SlidersHorizontal size={24} className="text-theme" />
           {(selectedOds.length > 0 || showFavoritesOnly) && (
             <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 shadow-sm animate-pulse" />
           )}
         </div>
-        <span className="text-[10px] font-bold text-gray-700 bg-white/80 px-2 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
+        <span className="text-[10px] font-bold text-theme bg-themeSurface/80 px-2 py-0.5 rounded-full backdrop-blur-sm shadow-sm">
           Filtros
         </span>
       </button>
@@ -234,7 +235,8 @@ export default function MapPage() {
         {routeCoords && (
           <button
             onClick={handleClearRoute}
-            className="absolute top-2 left-1/2 -translate-x-1/2 z-[1000] bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm shadow-md hover:bg-gray-50 flex items-center gap-2"
+            className="absolute top-2 left-1/2 -translate-x-1/2 z-[1000] bg-themeSurface text-theme border border-themeBorder rounded-lg px-4 py-2 text-sm shadow-theme hover:bg-themeSurfaceSecondary flex items-center gap-2"
+            data-testid="clear-route-btn"
           >
             <span>✕</span> Eliminar ruta
           </button>

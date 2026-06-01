@@ -44,25 +44,27 @@ export default function AchievementsModal({ isOpen, onClose }: AchievementsModal
     <div
       className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
       onClick={onClose}
+      data-testid="achievements-modal"
     >
       <div
-        className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-50 p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto"
+        className="bg-themeSurface text-theme rounded-3xl shadow-theme border border-themeBorder p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">🏆 Vitrina de Logros</h2>
+          <h2 className="text-2xl font-bold text-theme">🏆 Vitrina de Logros</h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-full hover:bg-themeSurfaceSecondary transition-colors"
+            data-testid="achievements-close"
           >
-            <X size={20} className="text-gray-600" />
+            <X size={20} className="text-themeTextSecondary" />
           </button>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="animate-pulse bg-gray-200 rounded-2xl h-32" />
+              <div key={i} className="animate-pulse bg-themeSurfaceSecondary rounded-2xl h-32" />
             ))}
           </div>
         ) : (
@@ -74,28 +76,28 @@ export default function AchievementsModal({ isOpen, onClose }: AchievementsModal
                   key={achievement.id}
                   className={`p-4 rounded-2xl border-2 transition-all ${
                     achievement.unlocked
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200 bg-white opacity-60 grayscale"
+                      ? "border-themePrimary bg-themeSurfaceSecondary"
+                      : "border-themeBorder bg-themeSurface opacity-60 grayscale"
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <div
                       className={`p-2 rounded-xl ${
-                        achievement.unlocked ? "bg-green-100" : "bg-gray-100"
+                        achievement.unlocked ? "bg-themePrimary/10" : "bg-themeSurfaceSecondary"
                       }`}
                     >
                       <Icon
                         size={24}
-                        className={achievement.unlocked ? "text-green-600" : "text-gray-400"}
+                        className={achievement.unlocked ? "text-themePrimary" : "text-themeTextSecondary"}
                       />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-gray-900">{achievement.title}</h3>
-                        {!achievement.unlocked && <Lock size={14} className="text-gray-400" />}
+                        <h3 className="font-bold text-theme">{achievement.title}</h3>
+                        {!achievement.unlocked && <Lock size={14} className="text-themeTextSecondary" />}
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">{achievement.description}</p>
-                      <p className="text-xs text-gray-500 font-medium">
+                      <p className="text-sm text-themeTextSecondary mb-2">{achievement.description}</p>
+                      <p className="text-xs text-themeTextSecondary font-medium">
                         {achievement.requiredKarma} pts Karma
                       </p>
                     </div>
