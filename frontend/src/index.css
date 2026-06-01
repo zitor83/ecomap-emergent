@@ -312,12 +312,8 @@ html[data-theme] footer {
 
 body {
   margin: 0;
-<<<<<<< HEAD
   background-color: var(--theme-bg);
   color: var(--theme-text);
-=======
-  color: #dee4d9;
->>>>>>> develop
   overflow-x: hidden;
   transition: background-color 300ms ease, color 300ms ease;
 }

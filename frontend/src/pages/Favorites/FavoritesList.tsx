@@ -5,13 +5,8 @@ import type { PointDetail } from "@/api/types/index"
 const list = "flex flex-col gap-4 px-4 pt-4 w-full md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 max-w-screen-xl mx-auto"
 const empty = "flex flex-col items-center justify-center py-20 px-6 text-center"
 const emptyIcon = "text-6xl mb-4"
-<<<<<<< HEAD
 const emptyText = "text-theme font-semibold text-lg mb-1"
 const emptyDesc = "text-themeTextSecondary text-sm"
-=======
-const emptyText = "text-gray-700 font-semibold text-lg mb-1"
-const emptyDesc = "text-gray-400 text-sm"
->>>>>>> develop
 
 interface Props {
   favorites: PointDetail[];
