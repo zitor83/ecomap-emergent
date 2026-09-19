@@ -54,3 +54,4 @@ credentials.json
 # =========================
 db-migration/
 frontend/.scannerwork/
+.emergent/
