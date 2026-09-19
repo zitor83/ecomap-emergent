@@ -48,3 +48,9 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# =========================
+# 6. Migraciones y herramientas
+# =========================
+db-migration/
+frontend/.scannerwork/
