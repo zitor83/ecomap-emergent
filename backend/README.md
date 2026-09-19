@@ -1,933 +1,596 @@
-# GoGoMap Backend API
+# GoGoMap Backend
 
-<div align="center">
+API REST del proyecto **GoGoMap**, desarrollada con Java y Spring Boot. Gestiona los puntos ODS de Málaga, usuarios, autenticación, favoritos y las funcionalidades de gamificación de la aplicación.
 
-**API RESTful de Alto Rendimiento para Localización de Puntos ODS**
+## 🛠️ Stack tecnológico
 
-[![Java](https://img.shields.io/badge/Java-21-orange?logo=java)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.14-green?logo=spring-boot)](https://spring.io/projects/spring-boot)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue?logo=mysql)](https://www.mysql.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-[Inicio Rápido](#-guía-de-inicio-rápido) • [Endpoints](#-endpoints-de-api) • [Arquitectura](#-arquitectura) • [Desarrollo](#-guía-de-desarrollo) • [Deploy](#-deployment)
-
-</div>
-
----
-
-## 📋 Tabla de Contenidos
-
-- [Descripción](#-descripción)
-- [Stack Tecnológico](#-stack-tecnológico)
-- [Requisitos](#-requisitos)
-- [Instalación y Configuración](#-instalación-y-configuración)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Endpoints de API](#-endpoints-de-api)
-- [Autenticación](#-autenticación)
-- [Manejo de Errores](#-manejo-de-errores)
-- [Guía de Desarrollo](#-guía-de-desarrollo)
-- [Deployment](#-deployment)
+| Tecnología      | Versión / uso                   |
+| --------------- | ------------------------------- |
+| Java            | 21                              |
+| Spring Boot     | 3.5.14                          |
+| Spring Web MVC  | Spring Boot 3.5.14              |
+| Spring Security | 6.5.10                          |
+| Spring Data JPA | Gestionado por Spring Boot      |
+| Hibernate ORM   | 6.6.49.Final                    |
+| MySQL           | 8.x                             |
+| MapStruct       | 1.5.5.Final                     |
+| Lombok          | 1.18.x                          |
+| Maven           | Build y gestión de dependencias |
+| Docker          | Imagen para despliegue          |
 
 ---
 
-## 📖 Descripción
+## 📋 Funcionalidades
 
-Backend API de GoGoMap desarrollado con **Spring Boot 3** y arquitectura en capas. Gestiona:
+El backend proporciona:
 
-- 🗺️ **Gestión de Puntos**: Localización y información de puntos de interés ODS
-- 👥 **Autenticación**: Registro, login y manejo de sesiones con JWT
-- ❤️ **Favoritos**: Gestión de puntos favoritos por usuario
-- 🎮 **Gamificación**: Sistema de karma, logros, ruleta diaria y recompensas
-- 📊 **Ranking**: Clasificación de usuarios por karma points
-- 🔐 **Autorización**: Control granular de acceso mediante Spring Security
-
-### Principios Arquitectónicos
-
-- **Clean Architecture**: Separación clara de responsabilidades
-- **DTO Pattern**: Mapeo entre entidades y DTOs con MapStruct
-- **Exception Handling**: Manejo global de errores con ResponseEntity
-- **Security First**: JWT, BCrypt y OAuth2 Resource Server
-- **Database**: MySQL 8 con Hibernate ORM y migrations
-
----
-
-## 🛠️ Stack Tecnológico
-
-| Capa | Componente | Versión |
-|:-----|:-----------|:--------|
-| **Core** | Java | 21 |
-| **Framework** | Spring Boot | 3.5.14 |
-| **Web** | Spring Web MVC | 3.5.14 |
-| **Seguridad** | Spring Security | 3.5.14 |
-| | OAuth2 Resource Server | 3.5.14 |
-| **Datos** | Spring Data JPA | 3.5.14 |
-| | Hibernate | 6.4+ |
-| **Base de Datos** | MySQL Connector Java | 8.0+ |
-| **Mapeo** | MapStruct | 1.5.5.Final |
-| **Utilidades** | Lombok | 1.18+ |
-| | Spring Boot DevTools | 3.5.14 |
-| **Build** | Maven | 3.8+ |
+* Registro e inicio de sesión de usuarios.
+* Autenticación stateless mediante JWT.
+* Gestión del perfil de usuario.
+* Gestión de puntos de interés ODS.
+* Favoritos.
+* Acciones sobre puntos y sistema de karma.
+* Ranking de usuarios.
+* Logros.
+* Recompensas.
+* Ruleta diaria.
+* Carga inicial de puntos ODS desde archivos GeoJSON.
+* API REST documentada mediante Swagger/OpenAPI.
+* Gestión global de excepciones.
 
 ---
 
-## 📋 Requisitos
+## 🏗️ Arquitectura
 
-### Requisitos Previos del Sistema
+El backend utiliza una **arquitectura en capas**, separando principalmente:
 
-- ✅ **Java Development Kit (JDK)** 21 o superior
-  ```bash
-  java -version  # Verifica tu versión actual
-  ```
-- ✅ **MySQL Server** 8.0 o superior con puerto 3306 disponible
-  ```bash
-  mysql --version  # Verifica tu versión
-  ```
-- ✅ **Maven** 3.8.0 o superior
-  ```bash
-  mvn --version  # Verifica tu instalación
-  ```
-- ✅ **Git** (opcional, para clonar el repo)
+```text
+Controller
+    ↓
+Service
+    ↓
+Repository
+    ↓
+Database
+```
+
+Las entidades JPA representan el modelo persistente y los DTO permiten separar los datos expuestos por la API de las entidades internas.
+
+MapStruct se utiliza para realizar determinados mapeos entre entidades y DTOs.
+
+### Principales paquetes
+
+```text
+src/main/java/com/esplai/backendgogomap/
+
+├── auth/
+│   ├── controller/
+│   ├── dto/
+│   ├── service/
+│   └── exception/
+│
+├── config/
+│
+├── controllers/
+│
+├── exceptions/
+│
+├── mappers/
+│
+├── models/
+│
+├── repositories/
+│
+└── services/
+```
+
+Los nombres y responsabilidades concretas pueden evolucionar junto con el proyecto.
 
 ---
 
-## 🚀 Instalación y Configuración
+# 💻 Requisitos
 
-### Paso 1: Preparar la Base de Datos
+Para ejecutar el backend localmente se necesita:
 
-Abre tu cliente MySQL o consola y ejecuta:
+* **JDK 21**
+* **Maven**
+* **MySQL 8.x**
+* Git, si se va a clonar el repositorio
+
+Comprobar Java:
+
+```bash
+java -version
+```
+
+Comprobar Maven:
+
+```bash
+mvn --version
+```
+
+> El Maven Wrapper incluido actualmente en el repositorio (`mvnw` / `mvnw.cmd`) necesita ser revisado antes de utilizarlo como alternativa reproducible. Por este motivo, las instrucciones de este README utilizan Maven instalado en el sistema.
+
+---
+
+# 🚀 Configuración local
+
+## 1. Base de datos
+
+El backend utiliza MySQL.
+
+Por ejemplo, para una instalación local:
 
 ```sql
-CREATE DATABASE gogomap_db 
-CHARACTER SET utf8mb4 
+CREATE DATABASE gogomap_db
+CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
-
-SHOW DATABASES;  -- Verifica que se creó correctamente
 ```
 
-**Alternativa con Docker** (opcional):
+El nombre, usuario, contraseña y demás parámetros pueden configurarse mediante variables de entorno.
+
+---
+
+## 2. Variables de entorno
+
+Las principales variables utilizadas por el backend son:
+
+| Variable                 | Descripción                         | Ejemplo                                                     |
+| ------------------------ | ----------------------------------- | ----------------------------------------------------------- |
+| `DB_URL`                 | URL JDBC de MySQL                   | `jdbc:mysql://localhost:3306/gogomap_db?serverTimezone=UTC` |
+| `DB_USERNAME`            | Usuario de la base de datos         | `root`                                                      |
+| `DB_PASSWORD`            | Contraseña de MySQL                 | `tu_password`                                               |
+| `JWT_SECRET`             | Clave utilizada para firmar los JWT | `tu_clave_secreta`                                          |
+| `JWT_EXPIRATION_MINUTES` | Duración del JWT en minutos         | `1440`                                                      |
+
+No se deben almacenar credenciales reales en el repositorio.
+
+### Desarrollo local
+
+La configuración de `application.properties` proporciona valores por defecto para facilitar el desarrollo local.
+
+La configuración debe revisarse antes de utilizar el backend contra una base de datos diferente de la local.
+
+---
+
+# ▶️ Ejecutar el backend
+
+Desde el directorio `backend`:
 
 ```bash
-docker run --name gogomap_mysql \
-  -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=gogomap_db \
-  -p 3306:3306 \
-  -d mysql:8.0
-```
-
-### Paso 2: Configurar Variables de Entorno
-
-Las variables de entorno **deben establecerse antes de ejecutar** el backend. Pueden configurarse de varias formas:
-
-#### Opción A: Variables del Sistema (Windows)
-```powershell
-[System.Environment]::SetEnvironmentVariable("DB_URL", "jdbc:mysql://localhost:3306/gogomap_db?serverTimezone=UTC", "User")
-[System.Environment]::SetEnvironmentVariable("DB_USERNAME", "root", "User")
-[System.Environment]::SetEnvironmentVariable("DB_PASSWORD", "tu_password", "User")
-[System.Environment]::SetEnvironmentVariable("JWT_SECRET", "tu_clave_de_32_caracteres_minimo", "User")
-[System.Environment]::SetEnvironmentVariable("JWT_EXPIRATION_MINUTES", "1440", "User")
-```
-
-#### Opción B: Variables del Sistema (Linux/macOS)
-```bash
-export DB_URL="jdbc:mysql://localhost:3306/gogomap_db?serverTimezone=UTC"
-export DB_USERNAME="root"
-export DB_PASSWORD="tu_password"
-export JWT_SECRET="tu_clave_de_32_caracteres_minimo"
-export JWT_EXPIRATION_MINUTES="1440"
-```
-
-#### Opción C: Configuración en IDE (IntelliJ IDEA)
-1. Run → Edit Configurations
-2. Environment variables → Añade tus variables
-3. Aplica y ejecuta
-
-#### Opción D: application.properties (SOLO desarrollo local)
-Edita `src/main/resources/application.properties`:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/gogomap_db?serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=tu_password
-app.jwt.secret=tu_clave_de_32_caracteres_minimo
-app.jwt.expiration-minutes=1440
-```
-
-### Referencia de Variables de Entorno
-
-| Variable | Descripción | Ejemplo | Requerida |
-|:---------|:-----------|:---------|:----------|
-| `DB_URL` | URL de conexión MySQL | `jdbc:mysql://localhost:3306/gogomap_db?serverTimezone=UTC` | ✅ |
-| `DB_USERNAME` | Usuario MySQL | `root` | ✅ |
-| `DB_PASSWORD` | Contraseña MySQL | `contraseña_segura` | ✅ |
-| `JWT_SECRET` | Clave para firmar tokens (min. 32 caracteres) | `clave_super_secreta_minimo_32_caracteres` | ✅ |
-| `JWT_EXPIRATION_MINUTES` | Duración de tokens en minutos | `1440` (24 horas) | ⚠️ (Default: 1440) |
-
-### Paso 3: Descargar Dependencias
-
-```bash
-cd backend
 mvn clean install
 ```
 
-Este comando:
-- ✅ Descarga todas las dependencias Maven
-- ✅ Compila el código
-- ✅ Ejecuta tests (si los hay)
+Ejecutar la aplicación:
 
-### Paso 4: Ejecutar la Aplicación
-
-#### Opción A: Con Maven (Recomendado)
 ```bash
 mvn spring-boot:run
 ```
 
-#### Opción B: Con el Wrapper incluido
-```bash
-./mvnw spring-boot:run        # Linux/macOS
-mvnw.cmd spring-boot:run      # Windows
+Por defecto, el backend local está disponible en:
+
+```text
+http://localhost:8080
 ```
 
-#### Opción C: Compilar y ejecutar JAR
+### Crear el JAR
+
 ```bash
 mvn clean package
+```
+
+El artefacto generado actualmente es:
+
+```text
+target/backend-GoGoMap-0.0.1-SNAPSHOT.jar
+```
+
+Y puede ejecutarse mediante:
+
+```bash
 java -jar target/backend-GoGoMap-0.0.1-SNAPSHOT.jar
 ```
 
-### Verificación de Inicio Correcto
-
-Si ves en la consola:
-
-```
-o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8080 (http) with context path ''
-o.s.b.StartupInfoLogger              : Started BackendGoGoMapApplication in X.XXX seconds
-```
-
-✅ **El servidor está corriendo en `http://localhost:8080`**
-
 ---
 
-## 📁 Estructura del Proyecto
+# 🔌 API REST
 
-```
-backend/
-├── src/main/java/com/esplai/backendgogomap/
-│   ├── BackendGoGoMapApplication.java     # Clase principal Spring Boot
-│   │
-│   ├── auth/                              # Módulo de Autenticación
-│   │   ├── controller/                    # AuthController
-│   │   ├── dto/                           # DTOs de autenticación
-│   │   ├── service/                       # Lógica de JWT y seguridad
-│   │   └── exception/                     # Excepciones de auth
-│   │
-│   ├── controllers/                       # Controladores REST
-│   │   ├── MapPointController.java        # Endpoints de puntos
-│   │   └── UserController.java            # Endpoints de usuarios
-│   │
-│   ├── services/                          # Lógica de Negocio
-│   │   ├── MapPointService.java
-│   │   ├── UserService.java
-│   │   ├── WheelSpinService.java
-│   │   ├── FavoriteService.java
-│   │   └── AchievementService.java
-│   │
-│   ├── repositories/                      # Acceso a Datos (JPA)
-│   │   ├── MapPointRepository.java
-│   │   ├── UserRepository.java
-│   │   ├── FavoriteRepository.java
-│   │   └── WheelSpinRepository.java
-│   │
-│   ├── models/                            # Entidades JPA
-│   │   ├── User.java
-│   │   ├── MapPoint.java
-│   │   ├── Favorite.java
-│   │   ├── WheelSpin.java
-│   │   ├── Achievement.java
-│   │   └── Reward.java
-│   │
-│   ├── mappers/                           # MapStruct Mappers
-│   │   ├── UserMapper.java
-│   │   ├── MapPointMapper.java
-│   │   └── WheelSpinMapper.java
-│   │
-│   ├── exceptions/                        # Gestión de Errores
-│   │   ├── GlobalExceptionHandler.java
-│   │   ├── ResourceNotFoundException.java
-│   │   └── UnauthorizedException.java
-│   │
-│   └── config/                            # Configuración
-│       ├── SecurityConfig.java            # Spring Security
-│       ├── JwtConfig.java                 # JWT Configuration
-│       └── CorsConfig.java                # CORS
-│
-├── src/main/resources/
-│   ├── application.properties              # Configuración de la app
-│   └── data/                               # Datasets GeoJSON (17 ODS)
-│       ├── ods1_centros_sociales.geojson
-│       ├── ods2_comedores_sociales.geojson
-│       └── ... (15 archivos más de ODS)
-│
-├── pom.xml                                 # Configuración Maven
-├── mvnw / mvnw.cmd                         # Maven Wrapper
-└── README.md                               # Este archivo
+## URL base local
+
+```text
+http://localhost:8080
 ```
 
----
+La API utiliza dos prefijos principales:
 
-## 🔌 Endpoints de API
-
-### Base URL
-```
-http://localhost:8080/api/v1
-```
-
-### Autenticación
-
-#### Registro
-```http
-POST /auth/register
-Content-Type: application/json
-
-{
-  "email": "usuario@ejemplo.com",
-  "password": "contraseña_segura",
-  "nombre": "Juan",
-  "apellidos": "García López"
-}
-```
-
-**Response: 201 Created**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "...",
-  "user": {
-    "id": 1,
-    "email": "usuario@ejemplo.com",
-    "nombre": "Juan",
-    "apellidos": "García López"
-  }
-}
-```
-
-#### Login
-```http
-POST /auth/login
-Content-Type: application/json
-
-{
-  "email": "usuario@ejemplo.com",
-  "password": "contraseña_segura"
-}
-```
-
-**Response: 200 OK**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "...",
-  "user": {
-    "id": 1,
-    "email": "usuario@ejemplo.com",
-    "nombre": "Juan",
-    "apellidos": "García López"
-  }
-}
-```
-
-### Puntos de Interés
-
-#### Obtener todos los puntos
-```http
-GET /points
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-[
-  {
-    "id": 1,
-    "nombre": "Centro Social La Triana",
-    "descripcion": "Centro de recursos comunitarios",
-    "odsNumber": 1,
-    "latitude": 36.7194,
-    "longitude": -4.4194,
-    "direccion": "Calle Manuel Irujo, 41, Málaga"
-  }
-]
-```
-
-#### Obtener detalle de un punto
-```http
-GET /points/{id}
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-{
-  "id": 1,
-  "nombre": "Centro Social La Triana",
-  "descripcion": "Centro de recursos comunitarios",
-  "odsNumber": 1,
-  "latitude": 36.7194,
-  "longitude": -4.4194,
-  "direccion": "Calle Manuel Irujo, 41, Málaga",
-  "horario": "09:00-17:00",
-  "telefono": "+34 952 221 234"
-}
-```
-
-### Usuarios
-
-#### Obtener perfil actual
-```http
-GET /users/me
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-{
-  "id": 1,
-  "email": "usuario@ejemplo.com",
-  "nombre": "Juan",
-  "apellidos": "García López",
-  "karmaPoints": 350,
-  "nivel": 5,
-  "createdAt": "2024-01-15T10:30:00Z"
-}
-```
-
-#### Actualizar perfil
-```http
-PUT /users/me
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "nombre": "Juan Carlos",
-  "apellidos": "García López"
-}
-```
-
-#### Obtener ranking de usuarios
-```http
-GET /users/ranking
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-[
-  {
-    "rank": 1,
-    "userId": 5,
-    "nombre": "María",
-    "karmaPoints": 2850,
-    "nivel": 15
-  },
-  {
-    "rank": 2,
-    "userId": 1,
-    "nombre": "Juan",
-    "karmaPoints": 350,
-    "nivel": 5
-  }
-]
-```
-
-### Favoritos
-
-#### Añadir a favoritos
-```http
-POST /users/me/favorites/{pointId}
-Authorization: Bearer {token}
-```
-
-**Response: 201 Created**
-```json
-{
-  "success": true,
-  "message": "Punto añadido a favoritos"
-}
-```
-
-#### Obtener favoritos
-```http
-GET /users/me/favorites
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-[
-  {
-    "id": 1,
-    "nombre": "Centro Social La Triana",
-    "odsNumber": 1,
-    "latitude": 36.7194,
-    "longitude": -4.4194
-  }
-]
-```
-
-#### Eliminar de favoritos
-```http
-DELETE /users/me/favorites/{pointId}
-Authorization: Bearer {token}
-```
-
-**Response: 204 No Content**
-
-### Ruleta Diaria
-
-#### Obtener estado de la ruleta
-```http
-GET /users/me/wheel-spin/status
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-{
-  "hasSpunToday": false,
-  "nextSpinAt": "2024-12-09T00:00:00Z"
-}
-```
-
-#### Girar la ruleta
-```http
-POST /users/me/wheel-spin
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-{
-  "slotIndex": 5,
-  "multiplier": "X5",
-  "karmaEarned": 50,
-  "totalKarma": 400,
-  "message": "¡Excelente! Ganaste 250 puntos karma"
-}
-```
-
-### Logros y Recompensas
-
-#### Obtener logros
-```http
-GET /users/me/achievements
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-[
-  {
-    "id": 1,
-    "nombre": "Primer Paso",
-    "descripcion": "Marca tu primer favorito",
-    "unlockedAt": "2024-01-20T15:30:00Z"
-  }
-]
-```
-
-#### Obtener recompensas disponibles
-```http
-GET /users/me/rewards
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-[
-  {
-    "id": 1,
-    "nombre": "Badge Sostenible",
-    "descripcion": "Distintivo de usuario comprometido",
-    "cost": 500,
-    "available": true
-  }
-]
-```
-
-#### Comprar recompensa
-```http
-POST /users/me/rewards/{rewardId}/buy
-Authorization: Bearer {token}
-```
-
-**Response: 200 OK**
-```json
-{
-  "success": true,
-  "message": "Recompensa adquirida",
-  "karmaRemaining": 150
-}
+```text
+/api/auth
+/api/v1
 ```
 
 ---
 
 ## 🔐 Autenticación
 
-### Flujo de Autenticación con JWT
+| Método | Endpoint             | Acceso  |
+| ------ | -------------------- | ------- |
+| `POST` | `/api/auth/register` | Público |
+| `POST` | `/api/auth/login`    | Público |
 
-```
-┌─────────────┐
-│   Cliente   │
-└──────┬──────┘
-       │ 1. POST /auth/login
-       ├─────────────────────────────────────┐
-       │                                     ▼
-       │                          ┌──────────────────┐
-       │                          │ AuthController  │
-       │                          └────────┬─────────┘
-       │                                   │ 2. Validar credenciales
-       │                                   ▼
-       │                          ┌──────────────────┐
-       │                          │ AuthService      │
-       │                          │ JWT Generation   │
-       │                          └────────┬─────────┘
-       │                                   │ 3. Generar token
-       │  ◀─────────────────────────────────┤
-       │ Token + RefreshToken               │
-       │
-       │ 4. Guardar token localmente
-       │
-       │ 5. GET /users/me
-       │ Authorization: Bearer {token}
-       ├─────────────────────────────────────┐
-       │                                     ▼
-       │                          ┌──────────────────┐
-       │                          │ JWT Filter       │
-       │                          │ Validación       │
-       │                          └────────┬─────────┘
-       │                                   │ 6. Verificar y decodificar
-       │                                   ▼
-       │                          ┌──────────────────┐
-       │                          │ UserController   │
-       │                          │ getPrincipal()   │
-       │                          └────────┬─────────┘
-       │                                   │ 7. Retornar user data
-       │  ◀─────────────────────────────────┤
-       │ User Profile                       │
+### Registro
+
+```http
+POST /api/auth/register
+Content-Type: application/json
 ```
 
-### Tokens
-
-- **Access Token**: Duración configurable (default: 24 horas)
-- **Refresh Token**: Duración extendida para renovación
-- **Algoritmo**: HS256 (HMAC with SHA-256)
-- **Claims**: `sub` (userId), `iat`, `exp`, `email`
-
-### Seguridad
-
-- ✅ Contraseñas hasheadas con **BCrypt**
-- ✅ Tokens firmados con clave privada
-- ✅ CORS configurado
-- ✅ CSRF protection (automático en Spring Security)
-
----
-
-## ⚠️ Manejo de Errores
-
-### Códigos de Estado HTTP
-
-| Código | Significado |
-|:-------|:-----------|
-| **200** | OK - Solicitud exitosa |
-| **201** | Created - Recurso creado |
-| **204** | No Content - Éxito sin contenido |
-| **400** | Bad Request - Datos inválidos |
-| **401** | Unauthorized - Falta autenticación |
-| **403** | Forbidden - No autorizado para este recurso |
-| **404** | Not Found - Recurso no encontrado |
-| **409** | Conflict - El recurso ya existe |
-| **500** | Internal Server Error - Error del servidor |
-
-### Formato de Errores
+Ejemplo de petición:
 
 ```json
 {
-  "status": 400,
-  "message": "Validación fallida",
-  "errors": [
-    {
-      "field": "email",
-      "message": "El email ya está registrado"
-    }
-  ],
-  "timestamp": "2024-12-08T12:34:56Z"
+  "nombre": "Juan",
+  "apellidos": "García López",
+  "email": "usuario@example.com",
+  "password": "contraseña"
 }
 ```
 
----
+### Login
 
-## 🛠️ Guía de Desarrollo
-
-### Crear un Nuevo Endpoint
-
-1. **Crear DTO** (`auth/dto/MiRequestDTO.java`):
-```java
-public record MiRequestDTO(
-    String campo1,
-    Integer campo2
-) {}
+```http
+POST /api/auth/login
+Content-Type: application/json
 ```
-
-2. **Crear Entidad** (`models/MiEntidad.java`):
-```java
-@Entity
-@Table(name = "mi_tabla")
-public class MiEntidad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    // campos...
-}
-```
-
-3. **Crear Repository** (`repositories/MiRepository.java`):
-```java
-@Repository
-public interface MiRepository extends JpaRepository<MiEntidad, Long> {
-    Optional<MiEntidad> findByNombre(String nombre);
-}
-```
-
-4. **Crear Service** (`services/MiService.java`):
-```java
-@Service
-@RequiredArgsConstructor
-public class MiService {
-    private final MiRepository repository;
-    
-    public MiEntidad crearObjeto(MiRequestDTO dto) {
-        // Lógica de negocio
-    }
-}
-```
-
-5. **Crear Controller** (`controllers/MiController.java`):
-```java
-@RestController
-@RequestMapping("/api/v1/mi-recurso")
-@RequiredArgsConstructor
-public class MiController {
-    private final MiService service;
-    
-    @PostMapping
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<MiResponseDTO> crear(
-        @Valid @RequestBody MiRequestDTO dto,
-        @AuthenticationPrincipal UserDetails user
-    ) {
-        return ResponseEntity.ok(service.crearObjeto(dto));
-    }
-}
-```
-
-### Convenciones de Código
-
-- **Nomenclatura**: camelCase para variables, UPPER_CASE para constantes
-- **JavaDoc**: Documentar métodos públicos
-- **Anotaciones**: Usar `@RequiredArgsConstructor` de Lombok
-- **Transacciones**: `@Transactional` en servicios que modifican datos
-- **Validación**: Usar `@Valid` y Bean Validation (`@NotNull`, etc.)
-
-### Testing (Recomendado)
-
-```java
-@SpringBootTest
-class MiServiceTest {
-    @MockBean
-    private MiRepository repository;
-    
-    @InjectMocks
-    private MiService service;
-    
-    @Test
-    void testCrearObjeto() {
-        // Arrange
-        MiRequestDTO dto = new MiRequestDTO("valor1", 42);
-        
-        // Act
-        MiEntidad resultado = service.crearObjeto(dto);
-        
-        // Assert
-        assertNotNull(resultado);
-    }
-}
-```
-
----
-
-## 📦 Deployment
-
-### Build de Producción
-
-```bash
-mvn clean package -DskipTests
-```
-
-Esto genera: `target/backend-GoGoMap-0.0.1-SNAPSHOT.jar`
-
-### Ejecución en Producción
-
-```bash
-java -jar backend-GoGoMap-0.0.1-SNAPSHOT.jar \
-  -Dspring.profiles.active=prod \
-  -Dspring.datasource.url=jdbc:mysql://prod-db:3306/gogomap_db \
-  -Dspring.datasource.username=${DB_USER} \
-  -Dspring.datasource.password=${DB_PASS}
-```
-
-### Docker (Opcional)
-
-```dockerfile
-FROM openjdk:21-slim
-WORKDIR /app
-COPY target/backend-GoGoMap-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
-```
-
-```bash
-docker build -t gogomaps-backend .
-docker run -e DB_URL=... -e DB_USERNAME=... -e DB_PASSWORD=... -e JWT_SECRET=... -p 8080:8080 gogomaps-backend
-```
-
----
-
-## 📚 Referencias
-
-- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-- [Spring Security Documentation](https://spring.io/projects/spring-security)
-- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-- [MapStruct Documentation](https://mapstruct.org/)
-- [JWT Introduction](https://jwt.io/introduction)
-
----
-
-## 🐛 Troubleshooting
-
-### El servidor no inicia
-- ✅ Verifica que MySQL está corriendo
-- ✅ Comprueba que las variables de entorno están configuradas
-- ✅ Revisa los logs para mensajes de error
-
-### Error de conexión a BD
-```
-Connection refused: connect
-```
-- ✅ Asegúrate que MySQL está activo: `mysql -u root -p`
-- ✅ Verifica la URL de conexión en `DB_URL`
-
-### JWT Token inválido
-- ✅ Regenera el token iniciando sesión nuevamente
-- ✅ Verifica que `JWT_SECRET` es el mismo en desarrollo y producción
-
----
-
-<div align="center">
-
-**Desarrollado con ❤️ por el equipo de GoGoMap**
-
-[↑ Volver arriba](#gogomaps-backend-api)
-
-</div>
-
-> **Nota:** Si no configuras estas variables en local, Spring Boot usará valores por defecto definidos en `application.properties` para evitar que la app explote durante el desarrollo rápido.
-
-### 4. Arrancar la Aplicación
-
-Desde la raíz del proyecto, ejecuta:
-
-```bash
-./mvnw spring-boot:run
-```
-
-La API estará disponible en `http://localhost:8080`.
-
----
-
-## 📘 Swagger / OpenAPI
-
-Para consultar y probar la API de forma interactiva, tienes disponible la documentación de **Swagger**.
-
-### Botón de acceso rápido
-
-[![Swagger](https://img.shields.io/badge/Swagger-UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=000000)](http://localhost:8080/swagger-ui/index.html)
-
-### ¿Cómo se usa?
-
-- Abre Swagger en tu navegador desde `http://localhost:8080/swagger-ui/index.html`.
-- Revisa los endpoints disponibles, sus parámetros y las respuestas documentadas.
-- Si quieres probar rutas protegidas, primero haz login en `/api/auth/login` para obtener el token JWT.
-- Después pulsa en **Authorize** y pega el token con el formato `Bearer <tu_token>` para ejecutar peticiones autenticadas.
-- Swagger también te permite ver los códigos de error y el modelo de respuesta `ApiErrorResponse` cuando algo falla.
-
----
-
-## 🏗️ Arquitectura y Entidades Principales
-
-El dominio de la aplicación se divide principalmente en dos grandes bloques:
-
-- **Usuarios (`User`):** Gestiona la identidad, el sistema de Karma, y mantiene una relación de "Favoritos" (Many-to-Many) con los puntos del mapa.
-- **Puntos de Mapa (`MapPoint`):** Almacena las coordenadas (Lat/Lon), dirección y metadatos de los puntos de interés, categorizados mediante un avanzado sistema de Enum bidireccional para los ODS.
-
----
-
-## 🛡️ Seguridad y Manejo de Errores
-
-- **Autenticación Stateless:** Gestión de sesiones mediante JWT (HS256) validado a través de `JwtAuthenticationConverter`.
-- **CORS Optimizado:** Configuración granular para integración segura con el Frontend (Vite/React/Angular), permitiendo cabeceras `Authorization` y optimizando las peticiones pre-flight.
-- **Manejo Global de Excepciones (`@RestControllerAdvice`):** La API **NUNCA** devuelve trazas de Java. Todos los errores (`400`, `401`, `404`, `409`, `500`) son interceptados y devueltos en un formato JSON estándar predecible para el frontend:
 
 ```json
 {
-    "timestamp": "2026-05-26T19:52:56.007",
-    "status": 404,
-    "error": "Not Found",
-    "message": "Punto de Mapa no encontrado con identificador: '99999'",
-    "path": "/api/v1/users/me/favorites/99999"
+  "email": "usuario@example.com",
+  "password": "contraseña"
 }
+```
+
+La autenticación devuelve un token JWT que el cliente debe enviar posteriormente mediante:
+
+```http
+Authorization: Bearer <token>
 ```
 
 ---
 
-## 🌐 Referencia de Endpoints (API)
+## 📍 Puntos ODS
 
-### 🔐 Autenticación (`/api/auth`)
+| Método | Endpoint                             | Acceso    |
+| ------ | ------------------------------------ | --------- |
+| `GET`  | `/api/v1/points`                     | Público   |
+| `GET`  | `/api/v1/points/{id}`                | Público   |
+| `POST` | `/api/v1/points/{id}/actions`        | Protegido |
+| `GET`  | `/api/v1/points/{id}/actions/status` | Protegido |
 
-| Método | Endpoint | Descripción | Acceso |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Crea un usuario. Lanza `409` si el email ya existe. | Público |
-| `POST` | `/api/auth/login` | Valida credenciales y devuelve el Token JWT. | Público |
-
-### 👤 Usuarios y Favoritos (`/api/v1/users`)
-
-| Método | Endpoint | Descripción | Acceso |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/v1/users/me` | Obtiene el perfil completo del usuario autenticado. | Protegido |
-| `GET` | `/api/v1/users/me/favorites` | Lista los puntos guardados en favoritos. | Protegido |
-| `POST` | `/api/v1/users/me/favorites/{id}` | Añade un MapPoint a la lista de favoritos. | Protegido |
-| `DELETE` | `/api/v1/users/me/favorites/{id}` | Elimina un MapPoint de los favoritos. | Protegido |
-
-### 📍 Puntos del Mapa (`/api/v1/points`)
-
-| Método | Endpoint | Descripción | Acceso |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/api/v1/points` | Listado general. Incluye categoría ODS para filtrado. | Público |
-| `GET` | `/api/v1/points/{id}` | Detalle completo de un punto específico. | Público |
+Los endpoints de consulta de puntos son públicos.
 
 ---
 
-## 🌱 Inicialización de Datos (Data Seeding)
+## 👤 Usuarios
 
-Para poblar la base de datos de Málaga con datos reales sin esfuerzo, el backend cuenta con un sistema de carga masiva en el arranque:
+| Método | Endpoint                | Acceso    |
+| ------ | ----------------------- | --------- |
+| `GET`  | `/api/v1/users/me`      | Protegido |
+| `PUT`  | `/api/v1/users/me`      | Protegido |
+| `GET`  | `/api/v1/users/ranking` | Protegido |
 
-- **Procesamiento de GeoJSON:** Escanea dinámicamente `src/main/resources/data/` buscando archivos de la Junta de Andalucía / Ayuntamiento.
-- **Mapeo Inteligente:** Utiliza el Enum `Ods` (`fromNumber`) para traducir categorías externas.
-- **Safe-Insert & Tolerancia a fallos:** Identifica duplicados por coordenadas. Si un archivo está corrupto, lo salta, lo reporta en los logs y continúa con el resto de la carga asegurando la alta disponibilidad del servicio.
+---
+
+## ⭐ Favoritos
+
+| Método   | Endpoint                               | Acceso    |
+| -------- | -------------------------------------- | --------- |
+| `GET`    | `/api/v1/users/me/favorites`           | Protegido |
+| `POST`   | `/api/v1/users/me/favorites/{pointId}` | Protegido |
+| `DELETE` | `/api/v1/users/me/favorites/{pointId}` | Protegido |
+
+---
+
+## 🎮 Gamificación
+
+### Ruleta diaria
+
+| Método | Endpoint                             |
+| ------ | ------------------------------------ |
+| `GET`  | `/api/v1/users/me/wheel-spin/status` |
+| `POST` | `/api/v1/users/me/wheel-spin`        |
+
+### Logros
+
+```http
+GET /api/v1/users/me/achievements
+```
+
+### Recompensas
+
+```http
+GET  /api/v1/users/me/rewards
+POST /api/v1/users/me/rewards/{rewardId}/buy
+```
+
+Todos estos endpoints requieren autenticación.
+
+---
+
+# 🔐 Seguridad
+
+La aplicación utiliza Spring Security con autenticación **stateless** basada en JWT.
+
+### Características principales
+
+* JWT para autenticación.
+* Contraseñas almacenadas mediante BCrypt.
+* Validación de tokens mediante Spring Security.
+* Control de acceso para endpoints protegidos.
+* CORS configurado para permitir la comunicación con el frontend.
+* CSRF deshabilitado para la API stateless.
+
+El token se envía mediante la cabecera:
+
+```http
+Authorization: Bearer <token>
+```
+
+### CORS
+
+En el entorno actual se permiten:
+
+```text
+http://localhost:5173
+https://gogomap-frontend.onrender.com
+```
+
+La segunda URL corresponde al frontend desplegado en Render.
+
+---
+
+# ⚠️ Manejo de errores
+
+El backend dispone de gestión global de excepciones mediante `@RestControllerAdvice`.
+
+Las respuestas de error utilizan un formato JSON consistente.
+
+Ejemplo:
+
+```json
+{
+  "timestamp": "2026-05-26T19:52:56.007",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Punto de Mapa no encontrado",
+  "path": "/api/v1/points/99999"
+}
+```
+
+Entre los códigos utilizados por la API se encuentran:
+
+| Código | Significado                      |
+| ------ | -------------------------------- |
+| `200`  | Operación correcta               |
+| `400`  | Petición incorrecta / validación |
+| `401`  | No autenticado                   |
+| `403`  | Acceso no permitido              |
+| `404`  | Recurso no encontrado            |
+| `409`  | Conflicto                        |
+| `500`  | Error interno                    |
+
+Los códigos concretos dependen del endpoint y de la excepción producida.
+
+---
+
+# 🌱 Carga inicial de datos
+
+El backend incluye mecanismos de inicialización de datos durante el arranque de la aplicación.
+
+Los puntos ODS se cargan desde los archivos GeoJSON situados en:
+
+```text
+src/main/resources/data/
+```
+
+Estos archivos contienen los datos utilizados para poblar inicialmente los puntos del mapa.
+
+Durante el arranque también se inicializan los datos necesarios para determinadas funcionalidades de la aplicación, como logros y recompensas.
+
+La aplicación utiliza Hibernate con:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+```
+
+Actualmente no se utiliza Flyway, Liquibase ni otro sistema de migraciones versionadas.
+
+---
+
+# 🧪 Testing
+
+Actualmente el backend dispone de un test de contexto de Spring Boot:
+
+```text
+src/test/java/com/esplai/backendgogomap/BackendEcomapApplicationTests.java
+```
+
+Ejecutar:
+
+```bash
+mvn test
+```
+
+El test comprueba que el contexto principal de Spring Boot puede iniciarse correctamente.
+
+---
+
+# 📖 Swagger / OpenAPI
+
+La API dispone de documentación interactiva mediante Swagger UI.
+
+### Local
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+### Producción
+
+```text
+https://gogomap-backend.onrender.com/swagger-ui/index.html
+```
+
+Swagger permite consultar los endpoints disponibles y probar las peticiones de la API.
+
+Para endpoints protegidos se puede utilizar el botón **Authorize** e introducir el JWT mediante el formato:
+
+```text
+Bearer <token>
+```
+
+---
+
+# 🐳 Docker
+
+El backend dispone de un `Dockerfile` para generar la imagen utilizada en el despliegue.
+
+La construcción utiliza dos etapas:
+
+```text
+Maven + JDK 21
+      ↓
+Compilación del proyecto
+      ↓
+JRE 21
+      ↓
+Ejecución del JAR
+```
+
+El Dockerfile se encuentra en:
+
+```text
+backend/Dockerfile
+```
+
+La imagen expone el puerto:
+
+```text
+8080
+```
+
+La configuración del servicio de producción puede establecer variables de entorno y el puerto utilizado por la plataforma.
+
+---
+
+# ☁️ Deployment
+
+El backend está desplegado actualmente en **Render** como Web Service.
+
+**API de producción:**
+
+https://gogomap-backend.onrender.com
+
+La base de datos de producción está alojada en **Aiven MySQL**.
+
+Arquitectura de producción:
+
+```text
+GoGoMap Frontend
+       │
+       │ HTTPS / REST
+       ▼
+GoGoMap Backend
+       │
+       │ MySQL + SSL
+       ▼
+Aiven MySQL
+```
+
+### Variables de producción
+
+El servicio utiliza variables de entorno para la configuración sensible:
+
+```text
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+JWT_SECRET
+JWT_EXPIRATION_MINUTES
+SERVER_PORT
+```
+
+Los valores reales no están incluidos en el repositorio.
+
+La configuración del servicio de Render no está versionada mediante `render.yaml`.
+
+---
+
+# 📂 Estructura principal
+
+```text
+backend/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/esplai/backendgogomap/
+│   │   │       ├── auth/
+│   │   │       ├── config/
+│   │   │       ├── controllers/
+│   │   │       ├── exceptions/
+│   │   │       ├── mappers/
+│   │   │       ├── models/
+│   │   │       ├── repositories/
+│   │   │       └── services/
+│   │   │
+│   │   └── resources/
+│   │       ├── data/
+│   │       └── application.properties
+│   │
+│   └── test/
+│
+├── Dockerfile
+├── pom.xml
+├── mvnw
+├── mvnw.cmd
+└── README.md
+```
+
+---
+
+# 🔧 Desarrollo
+
+Para trabajar sobre el backend:
+
+```bash
+mvn clean install
+mvn test
+mvn spring-boot:run
+```
+
+Antes de realizar cambios importantes se recomienda comprobar:
+
+```bash
+mvn test
+```
+
+y verificar manualmente los endpoints afectados.
+
+---
+
+## 🔗 Enlaces
+
+* **Proyecto:** https://github.com/zitor83/ecomap-emergent
+* **Frontend:** https://gogomap-frontend.onrender.com
+* **Backend:** https://gogomap-backend.onrender.com
+* **Swagger:** https://gogomap-backend.onrender.com/swagger-ui/index.html
+
+### Documentación oficial
+
+* [Spring Boot](https://spring.io/projects/spring-boot)
+* [Spring Security](https://spring.io/projects/spring-security)
+* [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+* [MapStruct](https://mapstruct.org/)
+* [JWT](https://jwt.io/introduction)
+* [MySQL](https://www.mysql.com/)
+* [Render](https://render.com/)
+* [Aiven](https://aiven.io/)

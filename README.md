@@ -1,925 +1,436 @@
-# GoGoMap
+# 🌱 GoGoMap
 
-<div align="center">
+**GoGoMap** es una aplicación web desarrollada para localizar y explorar puntos relacionados con los **17 Objetivos de Desarrollo Sostenible (ODS)** en Málaga.
 
-**Plataforma de Localización de Puntos de Interés Sostenibles en Málaga**
+La aplicación permite consultar puntos en un mapa, obtener información sobre ellos, guardarlos como favoritos y participar en diferentes funcionalidades de gamificación.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+## 🚀 Demo
 
-[Descripción](#-descripción) • [Características](#-características) • [Stack Tecnológico](#-stack-tecnológico) • [Instalación](#-instalación-y-configuración) • [Documentación](#-documentación) • [Contribución](#-contribución)
+* **Aplicación:** https://gogomap-frontend.onrender.com
+* **API:** https://gogomap-backend.onrender.com
+* **Repositorio:** https://github.com/zitor83/ecomap-emergent
 
-</div>
-
----
-
-## 📋 Tabla de Contenidos
-
-- [Descripción](#-descripción)
-- [Características](#-características)
-- [Stack Tecnológico](#-stack-tecnológico)
-- [Arquitectura del Proyecto](#-arquitectura-del-proyecto)
-- [Instalación y Configuración](#-instalación-y-configuración)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Documentación](#-documentación)
-- [Contribución](#-contribución)
-- [Licencia](#-licencia)
+> El frontend y el backend están desplegados en Render y la aplicación utiliza una base de datos MySQL alojada en Aiven.
 
 ---
 
-## 📖 Descripción
+## ✨ Funcionalidades
 
-GoGoMap es una aplicación web y móvil responsiva que facilita a los ciudadanos de Málaga localizar puntos de interés vinculados con los **17 Objetivos de Desarrollo Sostenible (ODS)** de Naciones Unidas. Mediante geolocalización en tiempo real, la plataforma identifica automáticamente los servicios públicos y espacios sostenibles más cercanos, permitiendo a los usuarios planificar rutas e interactuar con elementos gamificados para fomentar el compromiso cívico.
+### 🗺️ Mapa de puntos ODS
 
-### Misión
+* Visualización de puntos ODS sobre un mapa interactivo.
+* Filtrado de puntos por ODS.
+* Consulta del detalle de cada punto.
+* Geolocalización mediante la API de geolocalización del navegador.
+* Cálculo de rutas mediante **OSRM**.
+* Datos de puntos procedentes de archivos GeoJSON.
 
-Promover el conocimiento y acceso a iniciativas sostenibles en Málaga, generando consciencia ciudadana sobre los ODS mediante una experiencia interactiva e intuitiva.
+### 👤 Usuarios
+
+* Registro e inicio de sesión.
+* Autenticación mediante **JWT**.
+* Perfil de usuario.
+* Actualización de datos del perfil.
+
+### ⭐ Participación y gamificación
+
+* Guardado y gestión de puntos favoritos.
+* Acciones sobre puntos y sistema de karma.
+* Ranking de usuarios.
+* Logros.
+* Recompensas.
+* Ruleta diaria.
+
+### 🎨 Interfaz
+
+* Diseño responsive.
+* Navegación mediante React Router.
+* Páginas de error para rutas no encontradas y errores generales.
+* Iconografía correspondiente a los 17 ODS.
 
 ---
 
-## ✨ Características
-
-### Funcionalidades Principales
-
-- **🌍 Geolocalización en Tiempo Real**: Seguimiento preciso de la ubicación del usuario mediante GPS o red
-- **🗺️ Mapa Interactivo**: Visualización dinámica de puntos ODS en tiempo real con clustering inteligente
-- **🎯 Filtrado Avanzado**: Búsqueda por ODS, rango de distancia y estado de favoritos
-- **📍 Detalle de Puntos**: Información completa con distancia, categorización y estado
-- **🛣️ Generación de Rutas**: Cálculo automático de rutas mediante OSRM (Open Source Routing Machine)
-- **❤️ Sistema de Favoritos**: Gestión personalizada de puntos de interés
-- **🎮 Gamificación**: Sistema de Karma Points, logros y ruleta diaria
-- **👤 Perfil de Usuario**: Dashboard con estadísticas, rankings y recompensas
-- **🔐 Autenticación Segura**: Registro, login y gestión de sesiones con JWT
-
-### Estándares Implementados
-
-- Diseño responsive para escritorio, tablet y dispositivos móviles
-- Interfaz accesible y conforme a WCAG 2.1 Level AA
-- Performance optimizado con lazy loading y code splitting
-- Progressive Web App (PWA) ready
-
----
-
-## 🛠️ Stack Tecnológico
-
-### Backend
-| Componente | Tecnología |
-|:-----------|:-----------|
-| **Lenguaje** | Java 21 |
-| **Framework** | Spring Boot 3.5.14 |
-| **Base de Datos** | MySQL 8.0+ |
-| **ORM** | Hibernate (Spring Data JPA) |
-| **Seguridad** | Spring Security + OAuth2 + JWT |
-| **Mapeo de Objetos** | MapStruct |
-| **Build Tool** | Maven 3.8+ |
+## 🛠️ Stack tecnológico
 
 ### Frontend
-| Componente | Tecnología |
-|:-----------|:-----------|
-| **Lenguaje** | TypeScript 6.0 |
-| **Framework** | React 19.2 |
-| **Bundler** | Vite 5.0 |
-| **Estilos** | Tailwind CSS 4.3 |
-| **Componentes UI** | shadcn/ui + Radix UI |
-| **Mapas** | Leaflet + React-Leaflet |
-| **HTTP Client** | Axios |
-| **Router** | React Router v7 |
-| **Validación** | Zod (implícito) |
 
-### Herramientas Comunes
-- Linting: ESLint
-- Type Checking: TypeScript
-- Formateo: Prettier (recomendado)
-- Testing: (Configuración disponible)
+* **React 19**
+* **TypeScript 6**
+* **Vite 8**
+* **React Router 7**
+* **Axios**
+* **Leaflet**
+* **React-Leaflet**
+* Clustering de marcadores
+* **Tailwind CSS**
+* Componentes basados en Radix UI / shadcn/ui
+* **pnpm**
+
+### Backend
+
+* **Java 21**
+* **Spring Boot 3.5.14**
+* Spring Web
+* Spring Security
+* JWT
+* Spring Data JPA
+* Hibernate
+* MySQL
+* MapStruct
+* Maven
+
+### Infraestructura
+
+* **Render** — frontend y backend
+* **Aiven** — MySQL
+* **Docker** — imagen del backend
 
 ---
 
-## 🏗️ Arquitectura del Proyecto
+## 📁 Estructura del proyecto
 
-```
+```text
 GoGoMap/
-├── backend/                    # API RESTful (Java Spring Boot)
-│   ├── src/main/java/
-│   │   └── com/esplai/backendgogomap/
-│   │       ├── auth/          # Autenticación y autorización
-│   │       ├── controllers/   # Endpoints REST
-│   │       ├── services/      # Lógica de negocio
-│   │       ├── repositories/  # Acceso a datos
-│   │       ├── models/        # Entidades JPA
-│   │       ├── mappers/       # DTO mapping
-│   │       ├── exceptions/    # Manejo de errores
-│   │       └── config/        # Configuración
-│   ├── src/main/resources/
-│   │   ├── application.properties
-│   │   └── data/              # Datasets GeoJSON (17 ODS)
-│   ├── pom.xml
-│   ├── mvnw / mvnw.cmd
-│   └── README.md
-│
-├── frontend/                   # Aplicación React + TypeScript
+├── backend/
 │   ├── src/
-│   │   ├── components/        # Componentes reutilizables
-│   │   ├── pages/             # Páginas principales
-│   │   ├── routes/            # Enrutamiento
-│   │   ├── context/           # Context API (Auth, etc)
-│   │   ├── api/
-│   │   │   ├── services/      # Servicios API
-│   │   │   ├── types/         # Tipos TypeScript
-│   │   │   └── axiosConfig.ts # Configuración HTTP
-│   │   ├── utils/             # Funciones auxiliares
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── App.tsx
-│   │   └── main.tsx
-│   ├── public/                # Assets estáticos
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── vite.config.ts
-│   ├── tailwind.config.js
-│   └── README.md
+│   ├── pom.xml
+│   └── Dockerfile
 │
-└── README.md                  # Este archivo
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── pnpm-lock.yaml
+│
+└── README.md
 ```
+
+El proyecto está organizado como un monorepo con frontend y backend independientes.
+
+Para conocer los detalles específicos de cada parte:
+
+* [`frontend/README.md`](frontend/README.md)
+* [`backend/README.md`](backend/README.md)
 
 ---
 
-## 🚀 Instalación y Configuración
+# 💻 Instalación local
 
-### Requisitos Globales
+## Requisitos
 
-- **Node.js** 18+ (para frontend)
-- **Java** 21 (para backend)
-- **Maven** 3.8+ (para backend)
-- **MySQL** 8.0+ (base de datos)
-- **Git** (control de versiones)
+* Java 21
+* Maven
+* Node.js
+* pnpm
+* MySQL
 
-### Paso 1: Clonar el Repositorio
+## 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-organizacion/gogomaps.git
-cd gogomaps
+git clone https://github.com/zitor83/ecomap-emergent.git
+cd ecomap-emergent
 ```
 
-### Paso 2: Configurar Backend
+## 2. Backend
 
-Véase [backend/README.md](./backend/README.md#-instalación-y-configuración) para:
-- Instalación de dependencias Maven
-- Configuración de base de datos MySQL
-- Variables de entorno (JWT, DB credentials)
-- Ejecución del servidor
-
-### Paso 3: Configurar Frontend
-
-Véase [frontend/README.md](./frontend/README.md#-instalación-y-configuración) para:
-- Instalación de dependencias Node
-- Configuración de variables de entorno (.env)
-- Servidor de desarrollo
-- Build de producción
-
-### Ejecución Combinada (Desarrollo)
+Accede al directorio:
 
 ```bash
-# Terminal 1: Backend
 cd backend
-./mvnw spring-boot:run
-
-# Terminal 2: Frontend
-cd frontend
-pnpm dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173` (Vite)  
-API disponible en `http://localhost:8080` (Spring Boot)
+Configura las variables necesarias para la conexión a MySQL y JWT.
+
+Variables principales:
+
+```text
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+JWT_SECRET
+JWT_EXPIRATION_MINUTES
+```
+
+Por defecto, durante el desarrollo local, el backend utiliza:
+
+```text
+http://localhost:8080
+```
+
+Para ejecutar los tests:
+
+```bash
+mvn test
+```
+
+Para generar el proyecto:
+
+```bash
+mvn package
+```
+
+## 3. Frontend
+
+Desde el directorio `frontend`:
+
+```bash
+pnpm install
+```
+
+Configura:
+
+```text
+VITE_API_BASE_URL
+```
+
+Para desarrollo local:
+
+```text
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+El frontend añade automáticamente el prefijo `/api` al utilizar esta variable.
+
+Iniciar el servidor de desarrollo:
+
+```bash
+pnpm run dev
+```
+
+Comprobar lint:
+
+```bash
+pnpm run lint
+```
+
+Generar la build de producción:
+
+```bash
+pnpm run build
+```
+
+La aplicación estará disponible normalmente en:
+
+```text
+http://localhost:5173
+```
 
 ---
 
-## 📁 Estructura del Proyecto
+# 🔌 API
 
-Cada módulo cuenta con su propia documentación:
+La API está desarrollada con Spring Boot y utiliza dos prefijos principales.
 
-- **[Backend Documentation](./backend/README.md)**: API, endpoints, guías de desarrollo
-- **[Frontend Documentation](./frontend/README.md)**: Componentes, páginas, configuración
+### Autenticación
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+### Puntos ODS
+
+```text
+GET /api/v1/points
+GET /api/v1/points/{id}
+POST /api/v1/points/{id}/actions
+GET /api/v1/points/{id}/actions/status
+```
+
+### Usuarios
+
+```text
+GET /api/v1/users/me
+PUT /api/v1/users/me
+GET /api/v1/users/ranking
+```
+
+### Favoritos
+
+```text
+GET    /api/v1/users/me/favorites
+POST   /api/v1/users/me/favorites/{pointId}
+DELETE /api/v1/users/me/favorites/{pointId}
+```
+
+### Gamificación
+
+```text
+GET  /api/v1/users/me/wheel-spin/status
+POST /api/v1/users/me/wheel-spin
+
+GET  /api/v1/users/me/achievements
+
+GET  /api/v1/users/me/rewards
+POST /api/v1/users/me/rewards/{rewardId}/buy
+```
+
+La documentación interactiva de la API está disponible mediante **Swagger/OpenAPI** en el backend desplegado.
+
+---
+
+# 🚀 Despliegue
+
+La versión actualmente desplegada utiliza la siguiente arquitectura:
+
+```text
+                    ┌──────────────────────────┐
+                    │   GoGoMap Frontend       │
+                    │   Render Static Site     │
+                    └────────────┬─────────────┘
+                                 │
+                                 │ HTTPS / REST API
+                                 ▼
+                    ┌──────────────────────────┐
+                    │   GoGoMap Backend        │
+                    │   Render Web Service     │
+                    │   Spring Boot + Docker   │
+                    └────────────┬─────────────┘
+                                 │
+                                 │ MySQL / SSL
+                                 ▼
+                    ┌──────────────────────────┐
+                    │      Aiven MySQL         │
+                    │       Persistencia       │
+                    └──────────────────────────┘
+```
+
+### Frontend
+
+El frontend está desplegado como **Static Site** en Render.
+
+**URL:**
+
+https://gogomap-frontend.onrender.com
+
+Durante el proceso de build se utiliza:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm run build
+```
+
+El resultado publicado corresponde al directorio:
+
+```text
+frontend/dist
+```
+
+La configuración de Render incluye un rewrite de:
+
+```text
+/*
+```
+
+hacia:
+
+```text
+/index.html
+```
+
+Esto permite que las rutas gestionadas por React Router funcionen correctamente al acceder directamente a ellas.
+
+### Backend
+
+El backend está desplegado como **Web Service** en Render utilizando el `Dockerfile` situado en:
+
+```text
+backend/Dockerfile
+```
+
+**URL:**
+
+https://gogomap-backend.onrender.com
+
+El contenedor utiliza Java 21 y ejecuta la aplicación Spring Boot generada por Maven.
+
+### Base de datos
+
+La aplicación utiliza **MySQL** como base de datos de producción.
+
+La instancia actual está alojada en **Aiven** y es utilizada por el backend desplegado en Render.
+
+La conexión utiliza SSL.
+
+Las credenciales y datos de conexión se proporcionan mediante variables de entorno y **no forman parte del repositorio**.
+
+### Variables de entorno del backend
+
+```text
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+JWT_SECRET
+JWT_EXPIRATION_MINUTES
+SERVER_PORT
+```
+
+### Variables de entorno del frontend
+
+```text
+VITE_API_BASE_URL
+```
+
+En producción:
+
+```text
+VITE_API_BASE_URL=https://gogomap-backend.onrender.com
+```
+
+El frontend añade `/api` automáticamente al construir las peticiones.
+
+### CORS
+
+El backend permite actualmente las siguientes procedencias:
+
+```text
+http://localhost:5173
+https://gogomap-frontend.onrender.com
+```
+
+La configuración de los servicios de Render y de Aiven se gestiona fuera del repositorio.
+
+---
+
+# 🧪 Testing y calidad
+
+Actualmente el backend dispone de un test de contexto de Spring Boot.
+
+Ejecutar:
+
+```bash
+mvn test
+```
+
+En el frontend se utilizan las comprobaciones disponibles mediante:
+
+```bash
+pnpm run lint
+pnpm run build
+```
+
+No se incluyen actualmente tests automatizados de frontend.
+
+---
+
+# ⚠️ Consideraciones actuales
+
+* La aplicación es una **aplicación web**, no una aplicación móvil nativa.
+* La base de datos de producción utiliza MySQL en Aiven.
+* Hibernate utiliza `ddl-auto=update`; actualmente no existe un sistema de migraciones versionadas como Flyway o Liquibase.
+* La configuración de Render no está versionada mediante `render.yaml`.
+* Las credenciales y secretos de producción se mantienen fuera del repositorio.
+* Las características de PWA y el cumplimiento formal de WCAG no se consideran parte de la documentación técnica hasta disponer de una verificación específica.
 
 ---
 
 ## 📚 Documentación
 
-### Backend
-- Endpoints de API
-- Modelos de datos
-- Manejo de errores
-- Seguridad y autenticación
-- Guía de desarrollo
+Para información más detallada:
 
-Ver: [backend/README.md](./backend/README.md)
-
-### Frontend
-- Estructura de componentes
-- Páginas y rutas
-- Gestión de estado
-- Integración con API
-- Build y deployment
-
-Ver: [frontend/README.md](./frontend/README.md)
+* [Documentación del frontend](frontend/README.md)
+* [Documentación del backend](backend/README.md)
+* [Swagger / OpenAPI](https://gogomap-backend.onrender.com/swagger-ui/index.html)
 
 ---
 
-## 🤝 Contribución
-
-Las contribuciones son bienvenidas. Para contribuir:
-
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-### Estándares de Código
-
-- Código limpio y legible
-- Tipos TypeScript completos
-- JavaDoc en métodos públicos
-- Commits semánticos
-- Tests unitarios (cuando sea aplicable)
-
----
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](./LICENSE) para más detalles.
-
----
-
-## 📞 Contacto y Soporte
-
-Para preguntas, sugerencias o reportar problemas:
-
-- **Issues**: [Crear un issue](https://github.com/tu-organizacion/gogomaps/issues)
-- **Email**: contacto@gogomaps.dev
-- **Documentación**: [Wiki](https://github.com/tu-organizacion/gogomaps/wiki)
-
----
-
-<div align="center">
-
-**Desarrollado con ❤️ por el equipo de GoGoMap**
-
-*Promoviendo ciudadanía sostenible en Málaga*
-
-</div>
-
-### Estructura de componentes
-
-```
-src/components/onboarding/
-  GoGomapOnboarding.tsx     ← Componente raíz, ensambla todos los bloques
-  components/
-    Navbar.tsx              ← Barra de navegación fija con scroll effect
-    Hero.tsx                ← Sección principal con CTA
-    Features.tsx            ← 4 tarjetas de funcionalidades
-    OdsShowcase.tsx         ← Chips con iconos oficiales ODS
-    HowItWorks.tsx          ← 3 pasos de uso con CTA
-    KarmaCallout.tsx        ← Sección de gamificación con CTA
-    Footer.tsx              ← Pie de página con links
-    Button.tsx              ← Componente de botón reutilizable
-```
-
-### Secciones
-
-| Sección | Componente | Descripción |
-|---|---|---|
-| Navbar | `Navbar.tsx` | Fija en la parte superior, transparente al cargar y semiopaca al hacer scroll. Incluye logo y botón de acceso |
-| Hero | `Hero.tsx` | Titular, subtítulo, badge con tagline, dos botones CTA y foto de Málaga con halo verde |
-| Funcionalidades | `Features.tsx` | Cuatro tarjetas glassmorphism explicando las funciones principales de la app |
-| ODS | `OdsShowcase.tsx` | Fila horizontal con los iconos oficiales de los 6 ODS más relevantes para Málaga |
-| Cómo funciona | `HowItWorks.tsx` | Tres pasos conectados por una línea vertical explicando el flujo de uso |
-| Karma | `KarmaCallout.tsx` | Tarjeta destacada con ejemplo de perfil de usuario, barra de progreso y Eco Points |
-| Footer | `Footer.tsx` | Links de navegación interna y copyright |
-
-### Diseño
-
-- **Fondo:** degradado verde animado `from-[#1B6D24] via-[#6DBD6A] to-[#A3F69C]` con blobs, rejilla y partículas flotantes
-- **Estilo de tarjetas:** glassmorphism (`bg-white/10 backdrop-blur-md border border-white/10`)
-- **Botón primario:** glow verde (`bg-emerald-600` con `shadow` verde exterior)
-- **Botón secundario:** glassmorphism (`bg-white/10 backdrop-blur-md border border-white/20`)
-- **Iconos:** Lucide React
-- **Tipografía:** Inter
-
-### Componente Button
-
-El componente `Button.tsx` es reutilizable en toda la landing. Acepta las siguientes props:
-
-```tsx
-interface ButtonProps {
-  label: string
-  href?: string
-  onClick?: () => void
-  variant?: 'primary' | 'secondary'
-  icon?: ReactNode
-}
-```
-
-Uso:
-```tsx
-<Button label="Entrar a la App" href="/login" variant="primary" icon={<Leaf className="w-4 h-4" />} />
-<Button label="¿Cómo funciona?" href="#how-it-works" variant="secondary" />
-```
-
-### Convención de estilos
-
-La landing aplica un patrón de **extracción de clases** fuera del JSX, denominado **extraTailwind**. Todas las clases de Tailwind se definen como constantes con nombres descriptivos antes del componente, manteniendo el JSX limpio y legible:
-
-```tsx
-// ✅ Correcto
-const section = "relative px-6 py-8 flex flex-col items-center gap-8"
-
-export default function MiComponente() {
-  return <section className={section}>...</section>
-}
-
-// ❌ Incorrecto
-export default function MiComponente() {
-  return <section className="relative px-6 py-8 flex flex-col items-center gap-8">...</section>
-}
-```
-
-> ⚠️ Este patrón **extraTailwind** se aplica en todos los componentes del proyecto, no solo en la landing.
-
-### Iconos ODS
-
-Los iconos se cargan dinámicamente desde `public/assets/ods/` usando el formato oficial de Naciones Unidas:
-
-```
-S-WEB-Goal-01.png
-S-WEB-Goal-06.png
-...
-```
-
-La función helper `odsImg` construye la ruta automáticamente:
-
-```tsx
-function odsImg(num: number): string {
-  const padded = String(num).padStart(2, '0')
-  return `/assets/ods/S-WEB-Goal-${padded}.png`
-}
-```
-
----
-
-## Páginas de error
-
-El proyecto cuenta con dos páginas de error independientes que comparten el mismo estilo visual que el resto de la app (fondo `#F5F5EE`, colores verdes, tipografía oscura sobre fondo claro).
-
-### Rutas
-
-| Ruta | Componente raíz | Descripción |
-|---|---|---|
-| `/error` | `ErrorPage.tsx` | Error genérico con botones Reintentar y Volver |
-| `/*` | `Error404Page.tsx` | Error 404 con botón Volver al Mapa |
-
-### Estructura de componentes
-
-```
-src/components/error/
-  ErrorPage.tsx           ← Componente raíz de error general, ensambla todos los bloques
-  ErrorHeader.tsx         ← Cabecera con logo centrado, compartida entre ambas páginas
-  ErrorImage.tsx          ← Imagen ilustrativa del error general
-  ErrorImage404.tsx       ← Imagen ilustrativa del error 404
-  ErrorText.tsx           ← Título en mayúsculas y subtítulo descriptivo
-  ErrorActions.tsx        ← Botones Reintentar (recarga la página) y Volver (navigate(-1))
-  ErrorActions404.tsx     ← Botón Volver al Mapa con icono SVG propio
-  ErrorFooter.tsx         ← Footer simplificado, solo texto GoGoMap y copyright
-```
-
-### Imágenes
-
-Las imágenes ilustrativas de cada página de error se encuentran en:
-
-```
-public/assets/errorImages/
-  errorGeneral.png        ← Imagen para la página de error general
-```
-
-### Diseño
-
-- **Fondo:** `#F5F5EE` — crema claro, consistente con `Register.tsx` y `Login.tsx`
-- **Botones:** fondo `green-800`, texto blanco, `rounded-full` — consistente con el resto de la app
-- **Enlace Volver:** texto `green-700` con subrayado
-- **Header:** logo centrado con altura `py-1`, igual que el Navbar de la landing
-- **Footer:** borde superior `gray-300`, texto GoGoMap en `green-800` y copyright en `gray-400`
-
-### Iconos
-
-- **Reintentar:** icono `RefreshCw` de Lucide React
-- **Volver al Mapa:** icono SVG propio `/assets/icons/mapa.svg` con filtro CSS `invert` para mostrarlo en blanco sobre el botón verde
-
-### Convención de estilos
-
-Igual que en el resto del proyecto, todas las páginas de error aplican el patrón **extraTailwind**:
-
-```tsx
-// Estilos
-const container = "w-full mt-8 flex flex-col items-center text-center gap-3"
-const title = "text-3xl font-black text-gray-900"
-
-export default function ErrorText() {
-  return (
-    <div className={container}>
-      <h1 className={title}>¡HUBO UN ERROR!</h1>
-    </div>
-  )
-}
-```
-
----
-
-## Pantallas
-
-El proyecto cuenta con las siguientes vistas implementadas:
-
-### 🔐 Login (`/login`)
-Pantalla de bienvenida con formulario de acceso. Incluye campos de usuario y contraseña, enlace a registro y acceso al soporte.
-
-### 🗺️ Mapa principal (`/map`)
-Vista central de la aplicación. Muestra el mapa de Málaga con los puntos ODS geolocalizados. Incluye:
-- Barra superior con logo, iconos de búsqueda y perfil
-- Filtros rápidos de ODS en fila horizontal (con iconos por objetivo)
-- Panel inferior con la lista de **"Puntos cercanos"**
-- Navegación inferior: Mapa / Favoritos / Perfil
-
-### 📍 Detalle de punto (`/point/:id`)
-Modal o vista de detalle al seleccionar un punto ODS. Ejemplo:
-- Nombre y categoría ODS (ej. *ODS 1 — Cargador de coche*)
-- Dirección (ej. *Avda. Andalucía, 5*)
-- Estado: **Funcionando** / No disponible
-- Distancia en metros
-- Botones de acción: **Reportar** y **Ruta**
-
-### 📝 Registro (`/register`)
-Formulario de creación de cuenta con los campos: nombre, apellidos, nombre de usuario, email, contraseña y confirmación de contraseña. Botón de **Enviar** y enlace de vuelta al login. Branding GoGoMap en cabecera.
-
-### 👤 Perfil de usuario (`/profile`)
-Vista del perfil del usuario autenticado. Incluye:
-- Avatar con inicial del nombre
-- Nombre completo y fecha de registro (ej. *Miembro desde Enero 2024*)
-- Contador de **Karma Points** con impacto total (ej. *50 Karma Points*)
-- Nombre completo y email
-- Botón de **Cerrar Sesión**
-
-### ⭐ Favoritos (`/favorites`)
-Lista de puntos ODS guardados por el usuario, filtrable por ODS. Cada tarjeta muestra el icono oficial del ODS correspondiente, nombre del punto, dirección, estado y distancia. Incluye barra de filtrado horizontal con los 17 chips ODS, reutilizada desde el componente del mapa.
-
-### ❌ Error 404 (`/*`)
-Página de error para rutas no encontradas. Mensaje: **"¡UPS! PÁGINA NO ENCONTRADA — Parece que este punto no está en el mapa."** con botón de **Volver al mapa**.
-
-### ⚠️ Error general (`/error`)
-Página de error genérico. Mensaje: **"¡HUBO UN ERROR! — Parece que algo salió mal. Inténtalo de nuevo."** con botones de **Reintentar** y **Volver**.
-
----
-
-## ⭐ Pantalla de Favoritos
-
-### Ruta
-
-```
-/favorites → FavoritesPage
-```
-
-### Estructura de componentes
-
-```
-src/pages/Favorites/
-  FavoritesPage.tsx                   ← Componente raíz, gestiona el estado del filtro
-  data/
-    favorites.mock.ts                 ← Datos mock hasta integración con API real
-  components/
-    FavoritesHeader.tsx               ← Cabecera con logo e icono de ajustes
-    FavoritesTitle.tsx                ← Título "Favoritos" independiente
-    FavoritesList.tsx                 ← Lista filtrada de tarjetas
-    FavoriteCard.tsx                  ← Tarjeta individual de cada favorito
-```
-
-### Componentes reutilizados
-
-| Componente | Ruta original | Uso en Favoritos |
-|---|---|---|
-| `Filter` | `src/components/Maps/Filter.tsx` | Filtrado de tarjetas por ODS (mismo componente que el mapa) |
-| `Footer` | `src/components/Footer/Footer.tsx` | Barra de navegación inferior fija |
-
-### Estructura de datos
-
-El tipo `FavoritePlace` define la forma de cada favorito:
-
-```ts
-export interface FavoritePlace {
-  id: number
-  name: string
-  address: string
-  status: "Abierto" | "Cerrado" | "Gratis"
-  distance: string
-  ods: number        // número de ODS (1–17)
-  odsName: string    // nombre oficial del ODS
-}
-```
-
-### Flujo de datos
-
-```
-FavoritesPage (estado: selectedOds)
-  ├── Filter         ← recibe selected y onSelect
-  ├── FavoritesTitle
-  └── FavoritesList  ← recibe selectedOds, filtra FAVORITES_MOCK internamente
-        └── FavoriteCard × n
-```
-
-El estado `selectedOds` vive en `FavoritesPage` y se pasa hacia abajo a `Filter` y `FavoritesList`. Esto sigue el patrón **props down**: el padre coordina, los hijos solo reciben y renderizan.
-
-### Diseño
-
-- **Fondo:** `#F5F5EE` — crema claro, consistente con el resto de la app
-- **Tarjetas:** fondo blanco, `rounded-2xl`, `shadow-sm`
-- **Icono ODS:** imagen oficial de Naciones Unidas (`S-WEB-Goal-XX.png`), tamaño `80×80px`
-- **Nombre del ODS:** texto `green-600`, peso `semibold`
-- **Estado Abierto:** badge `bg-green-100 text-green-700`
-- **Estado Cerrado:** badge `bg-gray-200 text-gray-500`
-- **Estado Gratis:** badge `bg-gray-100 text-gray-600`
-- **Estrella de favorito:** `★` en `text-yellow-400`, esquina superior derecha de cada tarjeta
-- **Footer fijo:** envuelto en `fixed bottom-0` para que no se desplace con el scroll
-
-### Notas de implementación
-
-**Ocultación del logo en el Filter:**  
-El componente `Filter` incluye internamente el logo de GoGoMap. Para ocultarlo en Favoritos sin modificar el código original, se envuelve en un contenedor con `overflow-hidden` y un margen negativo que desplaza el componente hacia arriba, dejando el logo fuera del área visible:
-
-```tsx
-const filterWrapper = "w-full overflow-hidden"
-const filterOffset  = "-mt-[84px]"
-```
-
-**Footer fijo:**  
-El `Footer` original no tiene posicionamiento fijo. Se soluciona envolviéndolo sin tocar su código:
-
-```tsx
-const footerWrapper = "fixed bottom-0 left-0 w-full z-50"
-```
-
-### Pendiente
-
-- Sustituir `FAVORITES_MOCK` por llamada real a `GET /api/v1/users/me/favorites`
-- Implementar acción de la estrella para llamar a `DELETE /api/v1/points/{id}/favorite`
-- Añadir navegación al `Footer` mediante `useNavigate` (pendiente de implementación por el equipo)
-
----
-
-## Design System
-
-### Paleta de colores
-
-| Token | Valor | Uso |
-|---|---|---|
-| `primary` | `#2B5E2B` (verde oscuro) | Color principal, botones CTA, énfasis |
-| `secondary` | `#1F1F2E` (negro/gris oscuro) | Fondos oscuros, texto sobre claro |
-| `body` | `#F5F5F5` (blanco roto) | Fondo general de la app |
-| `accent` | `#C4185C` (magenta/rosa) | Acciones secundarias, alertas, Eco Points |
-| `neutral` | `#2D2D2D` (gris oscuro) | Texto principal, iconos |
-
-### Tipografía
-
-El proyecto utiliza una única familia tipográfica sans-serif en tres pesos:
-
-| Peso | Uso |
-|---|---|
-| **Regular** | Texto de cuerpo, etiquetas, descripciones |
-| **Medium** | Subtítulos, nombres de puntos, metadatos |
-| **Bold** | Títulos, botones, contadores, valores destacados |
-
-El tamaño base es de **16px** con escala modular para headings.
-
-### Componentes principales
-
-#### Botones
-
-```
-[Primary]   Fondo verde oscuro (#2B5E2B), texto blanco, border-radius redondeado
-[Secondary] Borde verde oscuro, fondo transparente, texto verde
-[Danger]    Fondo magenta/rosa (#C4185C), texto blanco — usado en Cerrar Sesión
-[Ghost]     Sin borde ni fondo, solo texto — usado en acciones terciarias
-```
-
-#### Iconos de ODS
-
-Cada ODS se representa con su icono oficial de Naciones Unidas en español. Los iconos se muestran en la barra de filtros del mapa y en las tarjetas de detalle.
-
-Para descargar los iconos oficiales en español:
-👉 [https://www.un.org/sustainabledevelopment/es/news/communications-material/](https://www.un.org/sustainabledevelopment/es/news/communications-material/)
-
-> ⚠️ El uso de los iconos ODS requiere incluir el siguiente texto en la app:  
-> *"El contenido de esta publicación no ha sido aprobado por las Naciones Unidas y no refleja las opiniones de las Naciones Unidas ni de sus funcionarios o Estados Miembros"*
-
-#### Tarjeta de punto ODS
-
-```
-┌─────────────────────────────┐
-│  [Imagen]  Nombre del punto │
-│            ODS · Dirección  │
-│            Estado · Distancia│
-└─────────────────────────────┘
-```
-
-#### Badge de Eco Points
-
-Componente de gamificación que muestra el impacto acumulado del usuario. Fondo verde oscuro, texto blanco, con icono de hoja.
-
-```
-┌──────────────────────────┐
-│  TOTAL IMPACTO           │
-│  🌿 50 Karma Points     │
-└──────────────────────────┘
-```
-
-#### Navegación inferior (móvil)
-
-Barra fija en la parte inferior con tres secciones:
-
-```
-[🗺️ Mapa]   [❤️ Favoritos]   [👤 Perfil]
-```
-
----
-
-## API Endpoints
-
-Base URL: `https://api.gogomap.es/api/v1`
-
-> ⚠️ La **Landing Page** (1) es actualmente estática. Se conectará a un endpoint dinámico en una versión futura.
-
----
-
-### 🔐 Autenticación
-
-#### Registro de usuario
-```
-POST /api/v1/auth/register
-```
-
-**Request DTO**
-```json
-{
-  "username": "string",
-  "email": "string",
-  "password": "string"
-}
-```
-
-**Response DTO**
-```json
-{
-  "userId": "string",
-  "username": "string"
-}
-```
-
----
-
-#### Login
-```
-POST /api/v1/auth/login
-```
-
-**Request DTO**
-```json
-{
-  "email": "string",
-  "password": "string"
-}
-```
-
-**Response DTO**
-```json
-{
-  "token": "string"
-}
-```
-
-> El token recibido debe incluirse en las cabeceras de las peticiones autenticadas como `Authorization: Bearer <token>`.
-
----
-
-### 🗺️ Mapa
-
-#### Cargar mapa principal con filtros ODS
-```
-GET /api/v1/map
-```
-Devuelve los datos necesarios para renderizar el mapa principal con los botones de filtrado por ODS.
-
----
-
-### 📍 Puntos ODS
-
-#### Detalle de un punto
-```
-GET /api/v1/points/{id}
-```
-Devuelve toda la información completa del punto seleccionado (nombre, categoría ODS, dirección, estado, imágenes, distancia, etc.).
-
----
-
-### 👤 Perfil de usuario
-
-#### Datos del usuario activo
-```
-GET /api/v1/users/me/
-```
-Devuelve todos los datos y estadísticas del usuario autenticado (nombre, email, Eco Points, fecha de registro, etc.).
-
----
-
-### ⭐ Favoritos
-
-#### Listar favoritos del usuario
-```
-GET /api/v1/users/me/favorites
-```
-Devuelve la lista de puntos ODS guardados por el usuario, con información mínima de cada uno.
-
----
-
-#### Añadir punto a favoritos
-```
-POST /api/v1/points/{id}/favorite
-```
-Vincula un punto ODS al perfil del usuario.
-Devuelve `201 CREATED`.
-
----
-
-#### Eliminar punto de favoritos
-```
-DELETE /api/v1/points/{id}/favorite
-```
-Elimina la vinculación entre el punto y el usuario.
-Devuelve `204 No Content`.
-
----
-
-### 📋 Resumen de endpoints
-
-| Método | Endpoint | Vista | Auth |
-|--------|----------|-------|------|
-| `POST` | `/api/v1/auth/register` | Registro | ❌ |
-| `POST` | `/api/v1/auth/login` | Login | ❌ |
-| `GET` | `/api/v1/map` | Mapa principal | ✅ |
-| `GET` | `/api/v1/points/{id}` | Detalle de punto | ✅ |
-| `GET` | `/api/v1/users/me/` | Perfil | ✅ |
-| `GET` | `/api/v1/users/me/favorites` | Favoritos | ✅ |
-| `POST` | `/api/v1/points/{id}/favorite` | Favoritos | ✅ |
-| `DELETE` | `/api/v1/points/{id}/favorite` | Favoritos | ✅ |
-
----
-
-## Estructura del proyecto
-
-```
-gogomap-frontend/
-│
-├── public/
-│   ├── assets/
-│   │   ├── ods/                  # Iconos ODS oficiales en español (PNG)
-│   │   ├── fotos/                # Fotografías de Málaga
-│   │   ├── errorImages/          # Imágenes ilustrativas de páginas de error
-│   │   │   └── errorGeneral.png
-│   │   ├── icons/                # Iconos SVG propios de la app
-│   │   │   └── mapa.svg
-│   │   └── Logo.png              # Logo oficial de GoGoMap
-│   └── index.html
-│
-├── src/
-│   ├── components/
-│   │   ├── onboarding/           # Landing page
-│   │   │   ├── GoGomapOnboarding.tsx
-│   │   │   └── components/
-│   │   │       ├── Navbar.tsx
-│   │   │       ├── Hero.tsx
-│   │   │       ├── Features.tsx
-│   │   │       ├── OdsShowcase.tsx
-│   │   │       ├── HowItWorks.tsx
-│   │   │       ├── KarmaCallout.tsx
-│   │   │       ├── Footer.tsx
-│   │   │       └── Button.tsx
-│   │   ├── error/                # Páginas de error
-│   │   │   ├── ErrorPage.tsx
-│   │   │   ├── ErrorHeader.tsx
-│   │   │   ├── ErrorImage.tsx
-│   │   │   ├── ErrorImage404.tsx
-│   │   │   ├── ErrorText.tsx
-│   │   │   ├── ErrorActions.tsx
-│   │   │   ├── ErrorActions404.tsx
-│   │   │   └── ErrorFooter.tsx
-│   │   ├── Maps/                 # Componentes del mapa
-│   │   │   └── Filter.tsx        ← Filtro de chips ODS (reutilizado en Favoritos)
-│   │   ├── Footer/
-│   │   │   └── Footer.tsx        ← Barra de navegación inferior (reutilizada en Favoritos)
-│   │   └── ui/                   # Botones, inputs, badges genéricos
-│   │
-│   ├── pages/
-│   │   ├── Map/
-│   │   │   └── MapPage.tsx
-│   │   ├── Favorites/
-│   │   │   ├── FavoritesPage.tsx           ← Componente raíz
-│   │   │   ├── data/
-│   │   │   │   └── favorites.mock.ts       ← Datos mock (pendiente integración API)
-│   │   │   └── components/
-│   │   │       ├── FavoritesHeader.tsx     ← Cabecera con logo e icono ajustes
-│   │   │       ├── FavoritesTitle.tsx      ← Título de sección
-│   │   │       ├── FavoritesList.tsx       ← Lista con filtrado por ODS
-│   │   │       └── FavoriteCard.tsx        ← Tarjeta individual de favorito
-│   │   └── ...
-│   │
-│   ├── hooks/
-│   │   ├── useGeolocation.js
-│   │   └── useNearbyPoints.js
-│   │
-│   ├── services/
-│   │   ├── api.js
-│   │   ├── auth.js
-│   │   └── points.js
-│   │
-│   ├── store/
-│   ├── styles/
-│   │   └── tokens.css
-│   └── main.jsx
-│
-├── .env.example
-├── .gitignore
-├── package.json
-└── README.md
-```
-
----
-
-## Instalación
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-org/gogomap-frontend.git
-cd gogomap-frontend
-
-# 2. Instalar dependencias
-npm install
-
-# 3. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con las claves de API del mapa y del backend
-
-# 4. Arrancar en modo desarrollo
-npm run dev
-```
-
-### Variables de entorno necesarias
-
-```env
-VITE_API_BASE_URL=https://api.gogomap.es
-VITE_MAP_API_KEY=tu_clave_de_mapa
-VITE_AYUNTAMIENTO_API_URL=https://datosabiertos.malaga.eu/api
-```
-
----
-
-## Tecnologías
-
-| Capa | Tecnología |
-|---|---|
-| Framework | React + TypeScript |
-| Estilos | Tailwind CSS |
-| Iconos | Lucide React |
-| Mapa | Leaflet.js / Mapbox GL / Google Maps API |
-| Rutas | React Router v6 |
-| Estado global | Zustand |
-| HTTP | Axios |
-| Geolocalización | Web Geolocation API |
-| Iconos ODS | Naciones Unidas (español) |
-
----
-
-## Contribución
-
-1. Haz un fork del repositorio
-2. Crea tu rama: `git checkout -b feature/nombre-de-la-feature`
-3. Haz commit de tus cambios: `git commit -m 'feat: descripción del cambio'`
-4. Sube la rama: `git push origin feature/nombre-de-la-feature`
-5. Abre un Pull Request hacia `main`
-
-Seguimos la convención de commits [Conventional Commits](https://www.conventionalcommits.org/es/).
-
----
-
-## Licencia
-
-© 2026 GoGoMap · Environmental Responsibility  
-Proyecto académico desarrollado en la ciudad de Málaga.
-
----
-
-> *El contenido de esta aplicación no ha sido aprobado por las Naciones Unidas y no refleja las opiniones de las Naciones Unidas ni de sus funcionarios o Estados Miembros.*  
-> Iconos ODS: [Naciones Unidas — Materiales de comunicación](https://www.un.org/sustainabledevelopment/es/news/communications-material/)
