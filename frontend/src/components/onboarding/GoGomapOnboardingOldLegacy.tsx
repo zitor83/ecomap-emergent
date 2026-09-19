@@ -65,13 +65,7 @@ function generateParticles(count: number) {
 }
 
 // Componente principal
-interface GoGomapOnBoardingProps {
-  onEnter?: () => void
-}
-
-export default function GoGomapOnBoarding({
-  onEnter,
-}: GoGomapOnBoardingProps) {
+export default function GoGomapOnBoarding() {
 
   // Refs
   const wrapperRef = useRef<HTMLDivElement>(null) // contenedor visible del carusel
@@ -86,7 +80,7 @@ export default function GoGomapOnBoarding({
   const navigate = useNavigate()
   
   // Estado
-  const [activeReal, setActiveReal] = useState<number>(0)
+  const [, setActiveReal] = useState<number>(0)
   const [visible, setVisible] = useState<boolean>(true)
   const [particles] = useState(() => generateParticles(50))
 

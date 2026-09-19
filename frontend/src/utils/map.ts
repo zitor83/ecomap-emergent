@@ -1,5 +1,3 @@
-import type { LatLngExpression } from "leaflet";
-
 export function getZoomForRadius(km: number): number {
   if (km <= 1) return 15;
   if (km <= 2) return 14;

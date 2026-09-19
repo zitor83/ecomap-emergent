@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import authService from "@/api/services/authService";
 
 export default function Login() {
@@ -51,7 +51,7 @@ export default function Login() {
       const response = await authService.login(usuario, password);
       await login(response.data.token);
       navigate(from, { replace: true });
-    } catch (error) {
+    } catch {
       setApiError("No se ha podido iniciar sesión. Revisa tus credenciales.");
     }
   };

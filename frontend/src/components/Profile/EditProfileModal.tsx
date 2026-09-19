@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { X } from "lucide-react";
 import userService, { type User } from "@/api/services/userService";
 
@@ -37,8 +38,11 @@ export default function EditProfileModal({ isOpen, onClose, currentUser, onSucce
       await userService.updateProfile({ nombre, apellidos, email });
       onSuccess();
       onClose();
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Error al actualizar el perfil");
+    } catch (err: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(err)
+        ? err.response?.data?.message
+        : undefined;
+      setError(message || "Error al actualizar el perfil");
     } finally {
       setIsLoading(false);
     }

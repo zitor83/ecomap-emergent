@@ -10,10 +10,9 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import type { Point } from "@/api/types/index";
-import { createOdsIcon } from "@/utils/OdsColors";
 import ClusteredMarkers from "@/components/Map/ClusteredMarkers";
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -87,19 +86,23 @@ function OdsFlyTo({
   radiusKm,
   userPosition,
 }: {
-  selectedOds: number | null;
+  selectedOds: number[];
   radiusKm: number;
   userPosition: [number, number] | null;
 }) {
   const map = useMap();
-  const prevOds = useRef<number | null>(null);
+  const prevOds = useRef<number[]>([]);
 
   useEffect(() => {
-    if (selectedOds !== null && selectedOds !== prevOds.current) {
+    const odsChanged =
+      selectedOds.length !== prevOds.current.length ||
+      selectedOds.some((ods) => !prevOds.current.includes(ods));
+
+    if (odsChanged) {
       const center = userPosition ?? [36.7213, -4.4214];
       map.flyTo(center, getZoomForRadius(radiusKm), { duration: 1.2 });
     }
-    prevOds.current = selectedOds;
+    prevOds.current = [...selectedOds];
   }, [selectedOds, radiusKm, userPosition, map]);
 
   return null;

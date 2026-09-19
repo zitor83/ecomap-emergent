@@ -11,7 +11,7 @@ interface SlideCardProps {
     slide: Slide
 }
 
-export default function SlideCard({ slide, isActive }: SlideCardProps) {
+export default function SlideCard({ slide }: SlideCardProps) {
   return (
     <div
       role="group"

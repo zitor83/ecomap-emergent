@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import type { PointDetail } from '../../api/types/index.ts';
 import { ODS_COLORS } from '@/utils/OdsColors';
 import { getOdsInfo } from '@/utils/odsMapping';
@@ -90,23 +91,6 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
 
   const withinRange = computeWithinRange(userPosition);
 
-  const handleInteract = async () => {
-    if (!point.id) return;
-    try {
-      setIsInteracting(true);
-      const resp = await pointService.performAction(String(point.id), 'VISIT');
-      setActionMessage(resp.data?.message ?? 'Interacción realizada');
-      setActionIsError(false);
-      setHasInteracted(true);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.message || 'Error realizando la interacción';
-      setActionMessage(msg);
-      setActionIsError(true);
-    } finally {
-      setIsInteracting(false);
-    }
-  };
-
   const handleVisit = async () => {
     if (!point.id) return;
     try {
@@ -115,8 +99,10 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
       setActionMessage(resp.data?.message ?? '✓ Has visitado este punto');
       setActionIsError(false);
       setHasInteracted(true);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.message || 'Error al registrar la visita';
+    } catch (err: unknown) {
+      const msg = axios.isAxiosError<{ message?: string }>(err)
+        ? err.response?.data?.message || err.message
+        : err instanceof Error ? err.message : 'Error al registrar la visita';
       setActionMessage(msg);
       setActionIsError(true);
     } finally {
@@ -299,19 +285,6 @@ export default function PointModel({ point, latitude, longitude, onRequestRoute,
         </p>
       )}
 
-      {/* Legacy Interactuar button (hidden, keeping code structure intact) */}
-      {false && !hasInteracted && (
-        <div className="mt-2">
-          <button
-            onClick={handleInteract}
-            disabled={isInteracting || !withinRange}
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-full text-white font-semibold text-base transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ backgroundColor: 'var(--app-green)' }}
-          >
-            {isInteracting ? 'Interactuando...' : 'Interactuar'}
-          </button>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,31 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import userService, { type User } from "@/api/services/userService";
-
-export interface UserProfile {
-  sub: string;
-  email?: string;
-  roles?: string[];
-  exp?: number;
-  iat?: number;
-  [key: string]: unknown;
-}
-
-interface AuthContextType {
-  token: string | null;
-  user: UserProfile | null;
-  profile: User | null;
-  isAuth: boolean;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  hasSpunWheelToday: boolean;
-  login: (token: string, refreshToken?: string) => Promise<void>;
-  logout: () => void;
-  refreshWheelSpinStatus: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  markWheelSpinDone: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext, type UserProfile } from "./AuthContextValue";
 const STORAGE_KEY = "gogomap_auth_token";
 const REFRESH_STORAGE_KEY = "gogomap_refresh_token";
 
@@ -83,10 +58,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(initialAuth.token);
   const [user, setUser] = useState<UserProfile | null>(initialAuth.user);
   const [profile, setProfile] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(Boolean(initialAuth.token));
   const [hasSpunWheelToday, setHasSpunWheelToday] = useState(false);
 
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await userService.getProfile();
@@ -97,9 +72,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const loadWheelSpinStatus = async () => {
+  const loadWheelSpinStatus = useCallback(async () => {
     if (!token) {
       setHasSpunWheelToday(false);
       return;
@@ -112,23 +87,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error("No se pudo comprobar el estado de la ruleta", error);
       setHasSpunWheelToday(false);
     }
-  };
-
-  useEffect(() => {
-    if (!token) return;
-    void loadWheelSpinStatus();
   }, [token]);
 
   useEffect(() => {
-    if (!token) {
-      setIsLoading(false);
-      return;
-    }
-    if (profile) return;
-    void loadProfile();
-  }, [token, profile]);
+    if (!token) return;
+    queueMicrotask(() => void loadWheelSpinStatus());
+  }, [token, loadWheelSpinStatus]);
 
-  const login = async (newToken: string, refreshToken?: string) => {
+  useEffect(() => {
+    if (!token || profile) return;
+    queueMicrotask(() => void loadProfile());
+  }, [token, profile, loadProfile]);
+
+  const login = useCallback(async (newToken: string, refreshToken?: string) => {
     const decoded = safeDecodeJwt(newToken);
     if (!decoded) return;
 
@@ -141,28 +112,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(decoded);
     await loadProfile();
     await loadWheelSpinStatus();
-  };
+  }, [loadProfile, loadWheelSpinStatus]);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(REFRESH_STORAGE_KEY);
     setToken(null);
     setUser(null);
     setProfile(null);
+    setIsLoading(false);
     setHasSpunWheelToday(false);
-  };
+  }, []);
 
-  const refreshWheelSpinStatus = async () => {
+  const refreshWheelSpinStatus = useCallback(async () => {
     await loadWheelSpinStatus();
-  };
+  }, [loadWheelSpinStatus]);
 
-  const refreshProfile = async () => {
+  const refreshProfile = useCallback(async () => {
     await loadProfile();
-  };
+  }, [loadProfile]);
 
-  const markWheelSpinDone = () => {
+  const markWheelSpinDone = useCallback(() => {
     setHasSpunWheelToday(true);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
@@ -179,16 +151,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refreshProfile,
       markWheelSpinDone,
     }),
-    [token, user, profile, isLoading, hasSpunWheelToday]
+    [token, user, profile, isLoading, hasSpunWheelToday, login, logout, refreshWheelSpinStatus, refreshProfile, markWheelSpinDone]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-  return context;
 }

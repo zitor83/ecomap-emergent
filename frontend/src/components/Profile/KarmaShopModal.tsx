@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { X, Award, Frame, Crown, ShoppingCart } from "lucide-react";
 import userService from "@/api/services/userService";
 import type { Reward } from "@/api/types/index";
@@ -47,8 +48,11 @@ export default function KarmaShopModal({ isOpen, onClose, userKarma, onPurchaseS
         r.id === rewardId ? { ...r, isOwned: true } : r
       ));
       onPurchaseSuccess();
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Error al comprar la recompensa");
+    } catch (error: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message
+        : undefined;
+      alert(message || "Error al comprar la recompensa");
     } finally {
       setPurchasing(null);
     }

@@ -4,7 +4,7 @@ import { SlidersHorizontal } from "lucide-react";
 import type { Map as LeafletMap } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Footer from "@/components/Footer/Footer";
-import Header from "@/components/header/Header";
+import Header from "@/components/Header/Header";
 import type { Point, PointDetail } from "@/api/types/index";
 import pointService from "@/api/services/pointService";
 import userService from "@/api/services/userService";
@@ -16,7 +16,7 @@ import PointDetailModal from "@/components/Map/PointDetailModal";
 import FilterDrawer from "@/components/Map/FilterDrawer";
 import { fetchOsrmRoute } from "@/utils/map";
 import { toast } from "sonner";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 
 export default function MapPage() {
   const location = useLocation();

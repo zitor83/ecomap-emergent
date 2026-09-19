@@ -15,7 +15,7 @@ function App() {
       };
       if (mq && mq.addEventListener) mq.addEventListener('change', handler);
       return () => { if (mq && mq.removeEventListener) mq.removeEventListener('change', handler); };
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);

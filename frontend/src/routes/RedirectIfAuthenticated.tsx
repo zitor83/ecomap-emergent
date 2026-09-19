@@ -1,8 +1,9 @@
+import type { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 
 interface RedirectIfAuthenticatedProps {
-  children: JSX.Element;
+  children: ReactElement;
 }
 
 export default function RedirectIfAuthenticated({ children }: RedirectIfAuthenticatedProps) {

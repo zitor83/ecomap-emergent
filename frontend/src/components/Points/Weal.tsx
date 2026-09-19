@@ -3,7 +3,7 @@ import { Wheel } from "react-custom-roulette";
 import { X } from "lucide-react";
 import Confetti from "react-confetti";
 import userService from "@/api/services/userService";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/useAuth";
 import axios from "axios";
 
 type Multiplier = "X1" | "X2" | "X5" | "X10";

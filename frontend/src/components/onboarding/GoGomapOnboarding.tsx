@@ -3,7 +3,6 @@ import Hero from './components/Hero'
 import Features from './components/Features'
 import OdsShowcase from './components/OdsShowcase'
 import HowItWorks from './components/HowItWorks'
-import KarmaCallout from './components/KarmaCallout'
 import Footer from './components/Footer'
 import { useState } from 'react'
 
