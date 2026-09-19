@@ -1,4 +1,4 @@
-package com.esplai.backend_GoGoMap;
+package com.esplai.backendgogomap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

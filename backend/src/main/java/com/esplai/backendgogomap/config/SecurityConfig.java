@@ -67,7 +67,8 @@ public class SecurityConfig {
 
         // Añade aquí los puertos del frontend (ej. 5173 para Vite/React/Vue)
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "https://gogomap-frontend.onrender.com"
         ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
