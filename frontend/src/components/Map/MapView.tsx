@@ -1,5 +1,14 @@
 import { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, ZoomControl, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  Circle,
+  ZoomControl,
+  useMap,
+} from "react-leaflet";
 import type { RefObject } from "react";
 import type { Map as LeafletMap } from "leaflet";
 import L from "leaflet";
@@ -12,7 +21,8 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import type { Point } from "@/api/types/index";
 import ClusteredMarkers from "@/components/Map/ClusteredMarkers";
 
-delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })
+  ._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -29,7 +39,10 @@ const userIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const MALAGA_BOUNDS = L.latLngBounds(L.latLng(36.4, -5.1), L.latLng(37.2, -3.8));
+const MALAGA_BOUNDS = L.latLngBounds(
+  L.latLng(36.4, -5.1),
+  L.latLng(37.2, -3.8),
+);
 
 interface MapViewProps {
   points: Point[];
@@ -130,8 +143,8 @@ export default function MapView({
       className="w-full h-full"
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+        url={`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${import.meta.env.VITE_CARTO_API_KEY}`}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
 
       <ZoomControl position="bottomright" />
